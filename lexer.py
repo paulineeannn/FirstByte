@@ -168,6 +168,5 @@ def main(input_string):
         else:
             i += 1
 
-    print (tokens)
     # return list for symbol table
     return tokens

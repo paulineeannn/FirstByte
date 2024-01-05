@@ -24,6 +24,7 @@ def command_upload():
     else:
         messagebox.showerror("Error", "Please select .fb file")
 
+
 def command_color(home, mode_dark):
     if mode_dark:
         mode_dark = False
@@ -54,6 +55,16 @@ def command_color(home, mode_dark):
             button_new.configure(fg_color="#FFFFFF", hover_color="#DCDCDC")
 
 
+def export_symboltable(tokens):
+    with open("SymbolTable.txt", "w") as file:
+        file.write("========="*7 + "\n" + "LEXEME\t\t\t\t\t |\t\t\tTOKEN\n")
+        file.write("========="*7 + "\n")
+
+        for lexeme, token in tokens:
+            file.write(f"{token.ljust(25)}|          {lexeme}\n__\n")
+
+    messagebox.showinfo("Export Successful", "Symbol Table exported to SymbolTable.txt")
+
 def command_analyze():
     global home
     home = False
@@ -77,20 +88,24 @@ def command_analyze():
                                              command=command_new)
         button_new.place(x=1140, y=85)
 
-        button_export = customtkinter.CTkButton(window,
-                                                 text="Export", font=("Arial", 13, "bold"),
-                                                 corner_radius=10, height=32, width=132,
-                                                 fg_color="#75C752", hover_color="#5F9F44")
-        button_export.place(x=1277, y=85)
-
         global mode_dark
         button_switch.configure(command=lambda: command_color(home, mode_dark))
 
         code = textbox_code.get("0.0", "end")
         result = lexer.main(code)
 
-        for i in range(len(result)):
-            table_result.insert('', 'end', values=((result[i][1]),(result[i][0])))
+        for token in result:
+            token_type, lexeme = token[0], token[1]
+            table_result.insert('', 'end', values=(lexeme, token_type))
+            
+        
+        button_export = customtkinter.CTkButton(window,
+                                                 text="Export", font=("Arial", 13, "bold"),
+                                                 corner_radius=10, height=32, width=132,
+                                                 fg_color="#75C752", hover_color="#5F9F44",
+                                                 command=lambda: export_symboltable(result))
+        button_export.place(x=1277, y=85)
+
 
 def command_new():
     textbox_code.configure(state="normal")
@@ -188,9 +203,10 @@ if __name__ == "__main__":
 
     scrollbar = Scrollbar(frame_result, orient=VERTICAL, command=table_result.yview)
     table_result.configure(yscrollcommand=scrollbar.set)
-    scrollbar.place(x=660, y=1, height=720)
+    scrollbar.place(x=660, y=1, height=715)
 
     # Change the height of the entire table
-    table_result['height'] = 35
+    table_result['height'] = 23
+
 
     window.mainloop()
