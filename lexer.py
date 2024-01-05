@@ -96,7 +96,7 @@ def main(input_string):
             current_token += char
             i += 1
 
-            while i < len(input_string) and is_special_char(input_string[i]):
+            if input_string[i] == '=':
                 current_token += input_string[i]
                 i += 1
 
