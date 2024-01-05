@@ -32,6 +32,7 @@ def command_color(home, mode_dark):
         label_logo.configure(image=img_logo_light)
         textbox_code.configure(fg_color="#F2F2F2", text_color="#1E1E1E")
         frame_result.configure(fg_color="#F2F2F2")
+        button_upload.configure(fg_color="#000000")
         button_switch.configure(image=img_dark, command=lambda: command_color(home, mode_dark))
 
         if home:
@@ -46,6 +47,7 @@ def command_color(home, mode_dark):
         label_logo.configure(image=img_logo_dark)
         textbox_code.configure(fg_color="#292929", text_color="#FFFFFF")
         button_switch.configure(image=img_light, command=lambda: command_color(home, mode_dark))
+        button_upload.configure(fg_color="#FFFFFF")
         frame_result.configure(fg_color="#292929")
 
         if home:
@@ -61,7 +63,7 @@ def export_symboltable(tokens):
         file.write("========="*7 + "\n")
 
         for lexeme, token in tokens:
-            file.write(f"{token.ljust(25)}|          {lexeme}\n__\n")
+            file.write(f"{token.ljust(25)}|          {lexeme}\n_______________________________________________________________\n")
 
     messagebox.showinfo("Export Successful", "Symbol Table exported to SymbolTable.txt")
 
