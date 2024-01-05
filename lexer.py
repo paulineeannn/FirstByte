@@ -43,15 +43,22 @@ def main(input_string):
             i += 1
 
         elif char == '@':
-            i += 1
-            # handling single-line comment
-            if input_string[i] != '@':
-                while i < len(input_string) and (input_string[i] != "\n"):
+            if i < len(input_string) - 1 and input_string[i + 1] == '@':  # Multi-line comment
+                i += 2  # Skip the two '@' characters
+                current_token = ""
+                while i < len(input_string) and input_string[i:i + 2] != '@@':
                     current_token += input_string[i]
                     i += 1
-                tokens.append((special_chars[char], char))
-                tokens.append(('COMMENT_SINGLE', current_token))
+                tokens.append(('COMMENT_SYM_MULTI', current_token))
                 current_token = ""
+                i += 2  # Skip the ending '@@'
+            else:  # Single-line comment
+                i += 1  # Skip the initial '@'
+                current_token = ""
+                while i < len(input_string) and input_string[i] != "\n":
+                    current_token += input_string[i]
+                    i += 1
+                tokens.append(('COMMENT_SYM_SINGLE', current_token))
 
         elif is_letter(char):
             # Handling data type, keywords, reserved words, and identifiers starting with letters
