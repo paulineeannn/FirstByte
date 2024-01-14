@@ -59,6 +59,7 @@ def main(input_string):
                     current_token += input_string[i]
                     i += 1
                 tokens.append(('COMMENT_SYM_SINGLE', current_token))
+                current_token = ""
 
         elif is_letter(char):
             # Handling data type, keywords, reserved words, and identifiers starting with letters
@@ -108,23 +109,23 @@ def main(input_string):
 
             current_token = ""
 
-        # Handling negative numbers
-        elif char == '-':
-            start = i
-            i += 1
-
-            if i < len(input_string) and input_string[i].isdigit():
-                while i < len(input_string) and (input_string[i].isdigit() or input_string[i] == '.'):
-                    i += 1
-
-                if input_string[i - 1] == '.':
-                    token_type = "NEGATIVE_DECIMAL"
-                else:
-                    token_type = "NEGATIVE_INTEGER"
-
-                tokens.append((token_type, input_string[start:i]))
-
-                current_token = ""
+        # # Handling negative numbers
+        # elif char == '-':
+        #     start = i
+        #     i += 1
+        #
+        #     if i < len(input_string) and input_string[i].isdigit():
+        #         while i < len(input_string) and (input_string[i].isdigit() or input_string[i] == '.'):
+        #             i += 1
+        #
+        #         if input_string[i - 1] == '.':
+        #             token_type = "NEGATIVE_DECIMAL"
+        #         else:
+        #             token_type = "NEGATIVE_INTEGER"
+        #
+        #         tokens.append((token_type, input_string[start:i]))
+        #
+        #         current_token = ""
 
         # Handling positive numbers
         elif is_digit(char):
@@ -134,13 +135,13 @@ def main(input_string):
             while i < len(input_string) and input_string[i].isdigit():
                 i += 1
 
-            token_type = "POSITIVE_INTEGER"
+            token_type = "INTEGER"
 
             if i < len(input_string) and input_string[i] == '.':
                 i += 1
                 while i < len(input_string) and input_string[i].isdigit():
                     i += 1
-                token_type = "POSITIVE_DECIMAL"
+                token_type = "DECIMAL"
 
             tokens.append((token_type, input_string[start:i]))
 

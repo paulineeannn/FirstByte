@@ -31,7 +31,7 @@ def command_color(home, mode_dark):
         window.configure(fg_color="#FFFFFF")
         label_logo.configure(image=img_logo_light)
         textbox_code.configure(fg_color="#F2F2F2", text_color="#1E1E1E")
-        frame_result.configure(fg_color="#F2F2F2")
+        frame_result.configure(fg_color="#FFFFFF")
         button_upload.configure(fg_color="#000000")
         button_switch.configure(image=img_dark, command=lambda: command_color(home, mode_dark))
 
@@ -48,7 +48,7 @@ def command_color(home, mode_dark):
         textbox_code.configure(fg_color="#292929", text_color="#FFFFFF")
         button_switch.configure(image=img_light, command=lambda: command_color(home, mode_dark))
         button_upload.configure(fg_color="#FFFFFF")
-        frame_result.configure(fg_color="#292929")
+        frame_result.configure(fg_color="#171717")
 
         if home:
             button_upload.configure(fg_color="#FFFFFF", hover_color="#DCDCDC")
@@ -177,7 +177,7 @@ if __name__ == "__main__":
                                           corner_radius=10, fg_color="transparent", hover_color="#5F9F44", command=lambda: command_color(home, mode_dark))
     button_switch.place(x=849, y=85)
 
-    frame_result = customtkinter.CTkFrame(window, width=547, height=577, fg_color="#292929")
+    frame_result = customtkinter.CTkFrame(window, width=547, height=577, fg_color="#171717")
     frame_result.place(x=913, y=141)
 
     global table_result
