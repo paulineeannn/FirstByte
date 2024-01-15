@@ -1,4 +1,4 @@
-from tokens import alphabet, digits, special_chars, delimiters, operators, keywords, reserved_words, data_type, spaces
+from tokens import alphabet, digits, special_chars, delimiters, constants, operators, keywords, reserved_words, data_type, noise_words, spaces
 
 def main(input_string):
     def is_letter(char):
@@ -92,6 +92,7 @@ def main(input_string):
                 current_token += input_string[i]
                 i += 1
 
+            # check for invalid identifiers
             if is_inv_identifier(input_string[i]):
                 current_token += input_string[i]
                 i += 1
@@ -102,18 +103,37 @@ def main(input_string):
 
                 tokens.append(('INVALID_TOKEN', current_token))
 
-            elif current_token in data_type:
-                tokens.append(('DATA_TYPE', current_token))
-            elif current_token in keywords:
-                tokens.append(('KEYWORD', current_token))
-            elif current_token in reserved_words:
-                tokens.append(('RESERVED_WORDS', current_token))
-            elif current_token in operators:
-                tokens.append((operators[current_token], current_token))
             else:
-                tokens.append(('IDENTIFIER', current_token))
+                # Check if the current token is a noise word or a valid token
+                for j in range(len(current_token), 0, -1):
+                    possible_token = current_token[:j]
+                    if possible_token in data_type:
+                        tokens.append(('DATA_TYPE', possible_token))
+                        current_token = current_token[j:]
+                        break
+
+                    elif possible_token in keywords:
+                        tokens.append(('KEYWORD', possible_token))
+                        current_token = current_token[j:]
+                        break
+
+                    elif possible_token in reserved_words:
+                        tokens.append(('RESERVED_WORDS', possible_token))
+                        current_token = current_token[j:]
+                        break
+
+                if current_token:
+                    if current_token in noise_words and (tokens[-1][1] in data_type or tokens[-1][1] in keywords or tokens[-1][1] in reserved_words):
+                        tokens.append(('NOISE_WORDS', current_token))
+
+                    elif current_token in operators:
+                        tokens.append((operators[current_token], current_token))
+
+                    else:
+                        tokens.append(('IDENTIFIER', current_token))
 
             current_token = ""
+
 
         # Handling identifiers starting with underscore
         elif char == '_':
@@ -157,45 +177,6 @@ def main(input_string):
 
             current_token = ""
 
-        # Handling  numbers
-        # elif is_digit(char):
-        #     current_token += char
-        #     i += 1
-        #
-        #     period_count = 0
-        #     invalid_count = 0
-        #
-        #     while i < len(input_string) and (is_digit(input_string[i]) or input_string[i] == '.' or is_special_char(input_string[i])) and input_string[i+1] != " ":
-        #         if is_special_char(input_string[i]) and input_string[i] != '.' and input_string[i] != ',':
-        #             invalid_count += 1
-        #         if input_string[i] == '.':
-        #             period_count += 1
-        #         if period_count > 2:
-        #             current_token += input_string[i]
-        #             i += 1
-        #             while i < len(input_string) and input_string[i].isdigit():
-        #                 current_token += input_string[i]
-        #                 i += 1
-        #         current_token += input_string[i]
-        #         i += 1
-        #
-        #
-        #     if period_count > 0 and ',' in current_token:
-        #         tokens.append(('INVALID_TOKEN', current_token))
-        #
-        #     elif invalid_count > 0:
-        #         tokens.append(('INVALID_TOKEN', current_token))
-        #
-        #     elif period_count <= 1:
-        #         token_type = "INTEGER" if '.' not in current_token else "DECIMAL"
-        #         tokens.append((token_type, current_token))
-        #
-        #     elif period_count > 2:
-        #         tokens.append(('INVALID_TOKEN', current_token))
-        #
-        #
-        #
-        #     current_token = ""
 
         # handling numbers
         elif is_digit(char):
@@ -243,6 +224,7 @@ def main(input_string):
                 tokens.append(("INVALID_TOKEN", current_token))
 
             current_token = ""
+
 
         # Handling invalid tokens
         elif is_invalid(char):

@@ -7,8 +7,6 @@ special_chars = {
     "@" : "COMMENT_SYM_SINGLE",
     "@@" : "COMMENT_SYM_MULTI",
     "#" : "POUND",
-    # '"' : "DOUBLE_QUOTE",
-    # "'" : "SINGLE_QUOTE",
     "," : "COMMA",
     ";" : "SEMICOLON",
     "|" : "PIPE",
@@ -18,16 +16,16 @@ special_chars = {
     "&" : "AMPERSAND"
 }
 
-
 delimiters = {
     ":": "COLON",
     "(": "PARENTHESIS_L",
     ")": "PARENTHESIS_R",
     "[": "BRACKET_L",
     "]": "BRACKET_R",
-    "{": "BRACE_L",  # wala sa documentation
-    "}": "BRACE_R",  # wala sa documentation
+    "{": "BRACE_L",
+    "}": "BRACE_R",
 }
+
 operators= {
     "=": "EQUAL",
     "+=" : "ADD_ASSIGNMENT",
@@ -57,7 +55,6 @@ operators= {
 keywords = {
     "bool",
     "def",
-    "pow",
     "char",
     "when",
     "otherwise",
@@ -88,8 +85,8 @@ keywords = {
 }
 
 reserved_words = {
-    "true",     # magkaiba case na nasa docu (true nasa #4 tas True sa #3)
-    "false",
+    "TRUE",
+    "FALSE",
     "main",
     "cont"
 }
@@ -100,6 +97,24 @@ data_type = {
     "char" : "CHARACTER",
     "deci" : "DECIMAL",
     "bool" : "BOOLEAN"
+}
+
+noise_words = {
+    "ean",
+    "eger",
+    "mal",
+    "er",
+    "ing",
+    "acter",
+    "ault",
+    "inue"
+}
+
+constants = {
+    "pi": "const_PI",
+    "accGrav": "const_acc_gravity",
+    "euler" : "const_euler",
+    "goldenRatio" : "const_golden_ratio"
 }
 
 spaces = {' ', '\n', '\t'}
