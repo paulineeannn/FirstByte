@@ -233,7 +233,7 @@ def main(input_string):
             current_token += char
             i += 1
 
-            while i < len(input_string) and (is_operator(input_string[i]) or input_string[i]=='='):
+            while i < len(input_string) and (is_operator(input_string[i])):
                 current_token += input_string[i]
                 i += 1
 
