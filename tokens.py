@@ -7,26 +7,29 @@ special_chars = {
     "@" : "COMMENT_SYM_SINGLE",
     "@@" : "COMMENT_SYM_MULTI",
     "#" : "POUND",
-    "=": "EQUAL",
     # '"' : "DOUBLE_QUOTE",
     # "'" : "SINGLE_QUOTE",
     "," : "COMMA",
-    ":" : "COLON",
     ";" : "SEMICOLON",
     "|" : "PIPE",
     "\\" : "BACKSLASH",
-    "(" : "PARENTHESIS_L",
-    ")" : "PARENTHESIS_R",
-    "[" : "BRACKET_L",
-    "]" : "BRACKET_R",
-    "{": "BRACE_L",         # wala sa documentation
-    "}": "BRACE_R",         # wala sa documentation
     "_" : "UNDERSCORE",
     "~" : "TILDE",
     "&" : "AMPERSAND"
 }
 
+
+delimiters = {
+    ":": "COLON",
+    "(": "PARENTHESIS_L",
+    ")": "PARENTHESIS_R",
+    "[": "BRACKET_L",
+    "]": "BRACKET_R",
+    "{": "BRACE_L",  # wala sa documentation
+    "}": "BRACE_R",  # wala sa documentation
+}
 operators= {
+    "=": "EQUAL",
     "+=" : "ADD_ASSIGNMENT",
     "-=" : "SUBTRACT_ASSIGNMENT",
     "*=" : "MULTIPLICATION_ASSIGNMENT",
