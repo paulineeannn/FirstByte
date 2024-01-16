@@ -73,6 +73,7 @@ def main(input_string):
                 tokens.append(('CHAR_COMMENT_SYM_MULTI', '@@'))
                 current_token = ""
                 i += 2  # Skip the ending '@@'
+
             else:  # Single-line comment
                 i += 1  # Skip the initial '@'
                 current_token = ""
@@ -118,13 +119,25 @@ def main(input_string):
                         break
 
                     elif possible_token in reserved_words:
-                        tokens.append(('RESERVED_WORDS', possible_token))
+                        tokens.append(('RESERVED_WORD', possible_token))
+                        current_token = current_token[j:]
+                        break
+
+                    elif possible_token in constants:
+                        tokens.append(('CONSTANT', possible_token))
                         current_token = current_token[j:]
                         break
 
                 if current_token:
-                    if current_token in noise_words and (tokens[-1][1] in data_type or tokens[-1][1] in keywords or tokens[-1][1] in reserved_words):
-                        tokens.append(('NOISE_WORDS', current_token))
+                    if len(tokens) > 0:
+                        if current_token in noise_words and (tokens[-1][1] in data_type or tokens[-1][1] in keywords or tokens[-1][1] in reserved_words):
+                            tokens.append(('NOISE_WORD', current_token))
+
+                        elif current_token in operators:
+                            tokens.append((operators[current_token], current_token))
+
+                        else:
+                            tokens.append(('IDENTIFIER', current_token))
 
                     elif current_token in operators:
                         tokens.append((operators[current_token], current_token))
@@ -204,12 +217,13 @@ def main(input_string):
                 while i < len(input_string) and input_string[i] not in delimiters and input_string[i] != ' ' and input_string[i] != '\n' and input_string[i] not in operators and input_string[i] != ',':
                     current_token += input_string[i]
                     i += 1
-                    token_type = "INVALID_TOKEN"
+                token_type = "INVALID_TOKEN"
 
             tokens.append((token_type, current_token))
 
             current_token = ""
 
+        # Handling operators
         elif is_operator(char):
             current_token += char
             i += 1

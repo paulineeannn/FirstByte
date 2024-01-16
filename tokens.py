@@ -111,10 +111,10 @@ noise_words = {
 }
 
 constants = {
-    "pi": "const_PI",
-    "accGrav": "const_acc_gravity",
-    "euler" : "const_euler",
-    "goldenRatio" : "const_golden_ratio"
+    "pi",
+    "accGrav",
+    "euler",
+    "goldenRatio"
 }
 
 spaces = {' ', '\n', '\t'}
