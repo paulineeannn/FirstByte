@@ -53,12 +53,7 @@ def main(input_string):
             current_token += char
             i += 1
 
-            if current_token in delimiters:
-                tokens.append((delimiters[current_token], current_token))
-
-            elif current_token in delimiters:
-                tokens.append((delimiters[current_token], current_token))
-
+            tokens.append((delimiters[current_token], current_token))
             current_token = ""
 
         elif char == '@':
