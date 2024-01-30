@@ -1,5 +1,4 @@
-from tokens import *
-
+from tokens import alphabet, digits, special_chars, delimiters, constants, operators, keywords, reserved_words, data_type, noise_words, spaces
 
 def main(input_string):
     # Function to check if a character is a letter
@@ -55,22 +54,9 @@ def main(input_string):
                 current_token += char
             else:
                 current_token += char
-                i += 1
-
-                if input_string[i] in spaces:
-                    tokens.append(('STRING', current_token))
-                    current_token = ""  # Reset the current token
-                elif input_string[i] in delimiters:
-                    tokens.append(('STRING', current_token))
-                    tokens.append(('STRING', input_string[i]))
-                    current_token = ""  # Reset the current token
-                else:
-                    while input_string[i] not in spaces:
-                        current_token += input_string[i]
-                        i += 1
-
-                    tokens.append(('INVALID_TOKEN', current_token))
-                    current_token = ""  # Reset the current token
+                # Append the string token to the list
+                tokens.append(('STRING', current_token))
+                current_token = ""  # Reset the current token
             i += 1
 
         # If currently inside a string, continue adding characters to the current token
@@ -89,27 +75,40 @@ def main(input_string):
 
         # Handling comments
         elif char == '@':
-            current_token += char
-            i += 1
+            if i < len(input_string) - 1 and input_string[i + 1] == '@':  # Multi-line comment
+                i += 2  # Skip the two '@' characters
+                current_token = ""
 
-            # Check for consecutive '@' characters
-            while i < len(input_string) and input_string[i] == '@':
-                current_token += input_string[i]
-                i += 1
+                tokens.append(('COMMENT_SYM_MULTI', '@@'))
+                while i < len(input_string) and input_string[i:i + 2] != '@@':
+                    current_token += input_string[i]
 
-            # Append the recognized special character token to the list
-            if current_token in special_chars:
-                tokens.append((special_chars[current_token], current_token))
-            else:
-                # If not recognized, consider it as an identifier
-                tokens.append(('IDENTIFIER', current_token))
+                    i += 1
 
-            current_token = ""  # Reset the current token
+                # Append multi-line comment tokens to the list
+                tokens.append(('COMMENT_MULTI', current_token))
 
-        # If currently inside a string or comment, continue adding characters to the current token
-        elif is_string or char == '@':
-            current_token += char
-            i += 1
+                if i < len(input_string) and input_string[i:i + 2] == '@@':
+                    tokens.append(('CHAR_COMMENT_SYM_MULTI', '@@'))
+
+                current_token = ""
+                i += 2  # Skip the ending '@@'
+
+            else:  # Single-line comment
+                i += 1  # Skip the initial '@'
+                current_token = ""
+
+                while i < len(input_string) and input_string[i] != "\n":
+                    current_token += input_string[i]
+                    i += 1
+
+                # Append single-line comment tokens to the list
+                tokens.append(('COMMENT_SYM_SINGLE', '@'))
+                tokens.append(('COMMENT_SINGLE', current_token))
+
+                current_token = ""
+
+                # Handling identifiers starting with letters
 
         elif is_letter(char):
             # Start building the current token with the first letter
@@ -185,14 +184,13 @@ def main(input_string):
             current_token = ""
 
             # Handling identifiers starting with underscore
-
-
         elif char == '_':
             current_token += char
             i += 1
 
             # Continue adding characters to the current token until a non-letter character is encountered
-            while i < len(input_string) and (is_letter(input_string[i]) or is_digit(input_string[i]) or input_string[i] == '_'):
+            while i < len(input_string) and (
+                    is_letter(input_string[i]) or is_digit(input_string[i]) or input_string[i] == '_'):
                 current_token += input_string[i]
                 i += 1
 
@@ -203,7 +201,8 @@ def main(input_string):
                 i += 1
 
                 # Continue collecting characters for an invalid identifier until a space, newline, or operator is found
-                while i < len(input_string) and (input_string[i] != ' ' and input_string[i] != '\n') and input_string[i] not in operators:
+                while i < len(input_string) and (input_string[i] != ' ' and input_string[i] != '\n') and input_string[
+                    i] not in operators:
                     current_token += input_string[i]
                     i += 1
 
@@ -282,19 +281,13 @@ def main(input_string):
                 i += 1
 
             # Check if the combined token is in operators
-            if current_token in operators and input_string[i] in spaces:  # checks if the next char is in space
+            if current_token in operators:
                 # Append the recognized operator token to the list
                 tokens.append((operators[current_token], current_token))
             else:
                 # If not recognized, consider it as an invalid token
-                current_token += input_string[i]
-                i += 1
-                while i < len(input_string) and input_string[i] not in spaces:
-                    current_token += input_string[i]
-                    i += 1
                 tokens.append(("INVALID_TOKEN", current_token))
 
-            i += 1
             current_token = ""  # Reset the current token
 
 
