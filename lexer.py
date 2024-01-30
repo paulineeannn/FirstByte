@@ -259,6 +259,10 @@ def main(input_string):
             else:
                 # If not recognized, consider it as an invalid token
                 current_token += input_string[i]
+                i+=1
+                while input_string[i] not in spaces:
+                    current_token += input_string[i]
+                    i+=1
                 tokens.append(("INVALID_TOKEN", current_token))
 
             i += 1
