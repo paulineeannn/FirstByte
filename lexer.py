@@ -72,23 +72,24 @@ def main(input_string):
             tokens.append((delimiters[current_token], current_token))
             current_token = "" # Reset the current token
 
-            # Handling comments starting with '@'
 
+        # Handling comments
         elif char == '@':
             if i < len(input_string) - 1 and input_string[i + 1] == '@':  # Multi-line comment
                 i += 2  # Skip the two '@' characters
-
                 current_token = ""
 
+                tokens.append(('COMMENT_SYM_MULTI', '@@'))
                 while i < len(input_string) and input_string[i:i + 2] != '@@':
                     current_token += input_string[i]
 
                     i += 1
 
                 # Append multi-line comment tokens to the list
-                tokens.append(('CHAR_COMMENT_SYM_MULTI', '@@'))
-                tokens.append(('COMMENT_SYM_MULTI', current_token))
-                tokens.append(('CHAR_COMMENT_SYM_MULTI', '@@'))
+                tokens.append(('COMMENT_MULTI', current_token))
+
+                if i < len(input_string) and input_string[i:i + 2] == '@@':
+                    tokens.append(('CHAR_COMMENT_SYM_MULTI', '@@'))
 
                 current_token = ""
                 i += 2  # Skip the ending '@@'
@@ -102,8 +103,8 @@ def main(input_string):
                     i += 1
 
                 # Append single-line comment tokens to the list
-                tokens.append(('CHAR_COMMENT_SYM_SINGLE', '@'))
-                tokens.append(('COMMENT_SYM_SINGLE', current_token))
+                tokens.append(('COMMENT_SYM_SINGLE', '@'))
+                tokens.append(('COMMENT_SINGLE', current_token))
 
                 current_token = ""
 
@@ -249,10 +250,13 @@ def main(input_string):
             if i < len(input_string) and input_string[i] == '.':
                 current_token += input_string[i]
                 i += 1
-                while i < len(input_string) and input_string[i].isdigit():
-                    current_token += input_string[i]
-                    i += 1
-                token_type = "DECIMAL"
+                if is_digit(input_string[i]):
+                    while i < len(input_string) and input_string[i].isdigit():
+                        current_token += input_string[i]
+                        i += 1
+                    token_type = "DECIMAL"
+                else:
+                    token_type = "INVALID_TOKEN"
 
             if input_string[i] not in delimiters and input_string[i] != ' ' and input_string[i] != '\n' and input_string[i] not in operators and input_string[i] != ',':
                 current_token += input_string[i]

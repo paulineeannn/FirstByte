@@ -6,6 +6,7 @@ special_chars = {
     "." : "PERIOD",
     "@" : "COMMENT_SYM_SINGLE",
     "@@" : "COMMENT_SYM_MULTI",
+    "'" : "SINGLE_QUOTE",
     "#" : "POUND",
     "," : "COMMA",
     ";" : "SEMICOLON",
@@ -17,22 +18,22 @@ special_chars = {
 }
 
 delimiters = {
-    ":": "COLON",
-    "(": "PARENTHESIS_L",
-    ")": "PARENTHESIS_R",
-    "[": "BRACKET_L",
-    "]": "BRACKET_R",
-    "{": "BRACE_L",
-    "}": "BRACE_R",
+    ":": "COLON_DELIMITER",
+    "(": "PARENTHESIS_OPEN",
+    ")": "PARENTHESIS_CLOSE",
+    "[": "BRACKET_OPEN",
+    "]": "BRACKET_CLOSE",
+    "{": "BRACE_OPEN",
+    "}": "BRACE_CLOSE",
 }
 
 operators= {
     "=": "EQUAL",
-    "+=" : "ADD_ASSIGNMENT",
-    "-=" : "SUBTRACT_ASSIGNMENT",
-    "*=" : "MULTIPLICATION_ASSIGNMENT",
-    "/=" : "DIVISION_ASSIGNMENT",
-    "%=" : "MODULO_ASSIGNMENT",
+    "+=" : "ADD_ASS",
+    "-=" : "SUBTRACT_ASS",
+    "*=" : "MULTIPLY_ASS",
+    "/=" : "DIVIDE_ASS",
+    "%=" : "MODULO_ASS",
     "++" : "INCREMENT",
     "--" : "DECREMENT",
     "+": "PLUS",
