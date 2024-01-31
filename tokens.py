@@ -104,11 +104,20 @@ noise_words = {
     "ean",
     "eger",
     "mal",
-    "er",
     "ing",
     "acter",
     "ault",
     "inue"
+}
+
+full_words = {
+    "boolean",
+    "integer",
+    "decimal",
+    "string",
+    "acter",
+    "default",
+    "continue"
 }
 
 constants = {

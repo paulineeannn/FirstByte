@@ -28,7 +28,7 @@ def main(input_string):
 
     # Function to check if a character is part of an invalid identifier
     def is_inv_identifier(char):
-        return (is_special_char(input_string[i]) or is_invalid(input_string[i])) and input_string[i] != '_' and input_string[i] != ','
+        return (is_special_char(input_string[i]) or is_operator(input_string[i]) or is_invalid(input_string[i])) and input_string[i] != '_' and input_string[i] != ','
 
     # Function to check if a character is invalid
     def is_invalid(char):
@@ -111,6 +111,7 @@ def main(input_string):
             current_token += char
             i += 1
 
+
         elif is_letter(char):
             # Start building the current token with the first letter
             current_token += char
@@ -122,53 +123,57 @@ def main(input_string):
                 i += 1
 
             # Check for invalid identifiers
-            if is_inv_identifier(input_string[i]):
+            if  i < len(input_string) and is_inv_identifier(input_string[i]) and input_string[i+1] not in spaces:
                 current_token += input_string[i]
                 i += 1
 
-                # Continue collecting characters for an invalid identifier until a space, newline, or operator is found
-                while i < len(input_string) and (input_string[i] != ' ' and input_string[i] != '\n') and input_string[i] not in operators:
+                # Continue collecting characters for an invalid identifier until a space, newline, or operator is found.
+                while i < len(input_string) and input_string[i] not in spaces:
                     current_token += input_string[i]
                     i += 1
 
                 # Append the invalid identifier token to the list
                 tokens.append(('INVALID_TOKEN', current_token))
 
+
             else:
-                # Check if the current token is a noise word or a valid token
-                for j in range(len(current_token), 0, -1):
-                    possible_token = current_token[:j]
-                    # Check if the possible token is a recognized data type
-                    if possible_token in data_type:
-                        # Append the recognized data type token to the list
-                        tokens.append(('DATA_TYPE', possible_token))
-                        current_token = current_token[j:]
-                        break
+                if current_token in full_words:
+                    # Check if the current token is a noise word or a valid token
+                    for j in range(len(current_token), 0, -1):
+                        possible_token = current_token[:j]
+                        # Check if the possible token is a recognized data type
+                        if possible_token in data_type:
+                            # Append the recognized data type token to the list
+                            tokens.append(('DATA_TYPE', possible_token))
+                            current_token = current_token[j:]
+                            break
 
-                    # Check if the possible token is a recognized keyword
-                    elif possible_token in keywords:
-                        # Append the recognized keyword token to the list
-                        tokens.append(('KEYWORD', possible_token))
-                        current_token = current_token[j:]
-                        break
+                        # Check if the possible token is a recognized keyword
+                        elif possible_token in keywords:
+                            # Append the recognized keyword token to the list
+                            tokens.append(('KEYWORD', possible_token))
+                            current_token = current_token[j:]
+                            break
 
-                    # Check if the possible token is a recognized reserved word
-                    elif possible_token in reserved_words:
-                        # Append the recognized reserved word token to the list
-                        tokens.append(('RESERVED_WORD', possible_token))
-                        current_token = current_token[j:]
-                        break
+                        # Check if the possible token is a recognized keyword
+                        elif possible_token in reserved_words:
+                            # Append the recognized keyword token to the list
+                            tokens.append(('RESERVED_WORD', possible_token))
+                            current_token = current_token[j:]
+                            break
 
-                    # Check if the possible token is a recognized constant
-                    elif possible_token in constants:
-                        tokens.append(('CONSTANT', possible_token))
-                        current_token = current_token[j:]
-                        break
+                    if current_token:
+                        print(f"current token: {current_token}")
+                        if len(tokens) > 0:
+                            if current_token in noise_words and (tokens[-1][1] in data_type or tokens[-1][1] in keywords or tokens[-1][1] in reserved_words):
+                                tokens.append(('NOISE_WORD', current_token))
 
-                if current_token:
-                    if len(tokens) > 0:
-                        if current_token in noise_words and (tokens[-1][1] in data_type or tokens[-1][1] in keywords or tokens[-1][1] in reserved_words):
-                            tokens.append(('NOISE_WORD', current_token))
+                            elif current_token in operators:
+                                tokens.append((operators[current_token], current_token))
+
+                            else:
+                                tokens.append(('IDENTIFIER', current_token))
+
 
                         elif current_token in operators:
                             tokens.append((operators[current_token], current_token))
@@ -176,17 +181,22 @@ def main(input_string):
                         else:
                             tokens.append(('IDENTIFIER', current_token))
 
-                    elif current_token in operators:
-                        tokens.append((operators[current_token], current_token))
+                elif current_token in data_type:
+                    tokens.append(('DATA_TYPE', current_token))
+                elif current_token in keywords:
+                    tokens.append(('KEYWORD', current_token))
+                elif current_token in reserved_words:
+                    tokens.append(('RESERVED_WORDS', current_token))
+                elif current_token in operators:
+                    tokens.append((operators[current_token], current_token))
 
-                    else:
-                        tokens.append(('IDENTIFIER', current_token))
+                else:
+                    tokens.append(('IDENTIFIER', current_token))
 
             current_token = ""
 
-            # Handling identifiers starting with underscore
 
-
+        # Handling identifiers starting with underscore
         elif char == '_':
             current_token += char
             i += 1
@@ -198,12 +208,12 @@ def main(input_string):
 
             token = 'IDENTIFIER'
             # Check for invalid identifiers
-            if is_inv_identifier(input_string[i]):
+            if  i < len(input_string) and is_inv_identifier(input_string[i]) and input_string[i+1] not in spaces:
                 current_token += input_string[i]
                 i += 1
 
                 # Continue collecting characters for an invalid identifier until a space, newline, or operator is found
-                while i < len(input_string) and (input_string[i] != ' ' and input_string[i] != '\n') and input_string[i] not in operators:
+                while i < len(input_string) and input_string[i] not in spaces:
                     current_token += input_string[i]
                     i += 1
 
@@ -236,7 +246,6 @@ def main(input_string):
 
             current_token = ""  # Reset the current token
 
-
         # handling numbers
         elif is_digit(char):
             current_token += char
@@ -259,7 +268,7 @@ def main(input_string):
                 else:
                     token_type = "INVALID_TOKEN"
 
-            if input_string[i] not in delimiters and input_string[i] != ' ' and input_string[i] != '\n' and input_string[i] not in operators and input_string[i] != ',':
+            if input_string[i] not in delimiters and input_string[i] not in spaces and input_string[i] != ',':
                 current_token += input_string[i]
                 i += 1
                 while i < len(input_string) and input_string[i] not in delimiters and input_string[i] != ' ' and input_string[i] != '\n' and input_string[i] not in operators and input_string[i] != ',':
@@ -296,7 +305,6 @@ def main(input_string):
 
             i += 1
             current_token = ""  # Reset the current token
-
 
         # Handling invalid tokens
         elif is_invalid(char):
