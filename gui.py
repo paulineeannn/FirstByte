@@ -2,7 +2,11 @@ from tkinter import filedialog, messagebox, ttk, VERTICAL, Scrollbar
 import customtkinter
 from PIL import Image
 from tkinter.filedialog import askopenfile
+
+from prettytable import PrettyTable
+
 import lexer
+import syntax
 
 def command_upload():
     file_path = filedialog.askopenfilename(initialdir='/documents', title='Select a File', filetypes=(("FirstByte files", "*.fb"),))
@@ -59,15 +63,18 @@ def command_color(home, mode_dark):
 
 def export_symboltable(tokens):
     with open("SymbolTable.txt", "w") as file:
-        file.write("========="*7 + "\n" + "LEXEME\t\t\t\t\t |\t\t\tTOKEN\n")
-        file.write("========="*7 + "\n")
+        table = PrettyTable()
+        table.field_names = (['Lexeme', 'Token'])
 
-        for lexeme, token in tokens:
-            file.write(f"{token.ljust(25)}|          {lexeme}\n_______________________________________________________________\n")
+        for token, lexeme in tokens:
+            table.add_row([lexeme, token])
+
+        table = str(table)
+        file.write(table)
 
     messagebox.showinfo("Export Successful", "Symbol Table exported to SymbolTable.txt")
 
-def command_analyze():
+def command_lexical():
     global home
     home = False
 
@@ -80,8 +87,10 @@ def command_analyze():
     else:
         textbox_code.configure(state="disabled")
         button_switch.place(x=1414, y=85)
-        button_analyze.place_forget()
+        button_lexical.place_forget()
         button_upload.place_forget()
+        button_syntax.place_forget()
+        
 
         global button_new, button_export
         button_new = customtkinter.CTkButton(window, text="New Code", font=("Arial", 13, "bold"),
@@ -98,7 +107,9 @@ def command_analyze():
 
         for token in result:
             token_type, lexeme = token[0], token[1]
-            table_result.insert('', 'end', values=(lexeme, token_type))
+            if token_type != "NEWLINE" and token_type != "WHITESPACE":
+                print(token_type)
+                table_result.insert('', 'end', values=(lexeme, token_type))
             
         
         button_export = customtkinter.CTkButton(window,
@@ -109,6 +120,47 @@ def command_analyze():
         button_export.place(x=1277, y=85)
 
 
+def command_syntax():
+    global home
+    home = False
+
+    # Get content from textbox
+    content = textbox_code.get("1.0", "end-1c")
+
+    # Check if the content is empty
+    if not content:
+        messagebox.showerror("Error", "Please type a code")
+    else:
+        textbox_code.configure(state="disabled")
+        button_switch.place(x=1414, y=85)
+        button_lexical.place_forget()
+        button_upload.place_forget()
+        button_syntax.place_forget()
+
+        global button_new, button_export
+        button_new = customtkinter.CTkButton(window, text="New Code", font=("Arial", 13, "bold"),
+                                             corner_radius=10, height=32, width=132,
+                                             fg_color="#FFFFFF", text_color="#75C752", hover_color="#DCDCDC",
+                                             command=command_new)
+        button_new.place(x=1140, y=85)
+
+        global mode_dark
+        button_switch.configure(command=lambda: command_color(home, mode_dark))
+
+        code = textbox_code.get("0.0", "end")
+        result = lexer.call_syntax(code)
+
+        for token in result:
+            token_type, lexeme = token[0], token[1]
+            table_result.insert('', 'end', values=(lexeme, token_type))
+
+        button_export = customtkinter.CTkButton(window,
+                                                text="Export", font=("Arial", 13, "bold"),
+                                                corner_radius=10, height=32, width=132,
+                                                fg_color="#75C752", hover_color="#5F9F44",
+                                                command=lambda: export_symboltable(result))
+        button_export.place(x=1277, y=85)
+
 def command_new():
     textbox_code.configure(state="normal")
     textbox_code.delete("1.0", "end")
@@ -117,8 +169,9 @@ def command_new():
     button_new.place_forget()
     button_export.place_forget()
     button_switch.place(x=849, y=85)
-    button_upload.place(x=575, y=85)
-    button_analyze.place(x=712, y=85)
+    button_upload.place(x=438, y=85)
+    button_lexical.place(x=575, y=85)
+    button_syntax.place(x=712, y=85)
     table_result.delete(*table_result.get_children())
 
 
@@ -159,13 +212,19 @@ if __name__ == "__main__":
                                           text="Upload Code",font=("Arial", 13, "bold"),
                                           corner_radius=10, height=32, width=132,
                                           fg_color="#FFFFFF", text_color="#75C752", hover_color="#DCDCDC", command=command_upload)
-    button_upload.place(x=575, y=85)
+    button_upload.place(x=438, y=85)
 
-    button_analyze = customtkinter.CTkButton(window,
-                                          text="Analyze Code",font=("Arial", 13, "bold"),
+    button_lexical = customtkinter.CTkButton(window,
+                                          text="Lexical Analyzer",font=("Arial", 13, "bold"),
                                           corner_radius=10, height=32, width=132,
-                                          fg_color="#75C752", hover_color="#5F9F44", command=command_analyze)
-    button_analyze.place(x=712, y=85)
+                                          fg_color="#75C752", hover_color="#5F9F44", command=command_lexical)
+    button_lexical.place(x=575, y=85)
+    
+    button_syntax = customtkinter.CTkButton(window,
+                                          text="Syntax Analyzer",font=("Arial", 13, "bold"),
+                                          corner_radius=10, height=32, width=132,
+                                          fg_color="#548F3B", hover_color="#5F9F44", command=command_syntax)
+    button_syntax.place(x=712, y=85)
 
     img_light = customtkinter.CTkImage(light_image=Image.open("button-light.png"),
                                         size=(23, 23))

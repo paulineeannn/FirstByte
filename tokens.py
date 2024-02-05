@@ -1,3 +1,4 @@
+
 alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 
 digits = '0123456789'
@@ -34,12 +35,12 @@ operators= {
     "*=" : "MULTIPLY_ASS",
     "/=" : "DIVIDE_ASS",
     "%=" : "MODULO_ASS",
-    "++" : "INCREMENT",
-    "--" : "DECREMENT",
-    "+": "PLUS",
-    "-": "MINUS",
-    "*": "MULTIPLY",
-    "/": "DIVIDE",
+    "++" : "INCREMENT", # unary
+    "--" : "DECREMENT", # unary
+    "+": "PLUS",    # arithmetic op
+    "-": "MINUS",   # arithmetic op
+    "*": "MULTIPLY",    # arithmetic op
+    "/": "DIVIDE",  # arithmetic op
     "%": "MODULO",
     "^": "EXPONENT",
     "!": "LOGICAL_NOT",
@@ -53,51 +54,82 @@ operators= {
     "<=" : "LESS_THAN_EQUAL",
 }
 
+# binary_ops = {
+#     "=": "EQUAL",
+#     "+=": "ADD_ASS",
+#     "-=": "SUBTRACT_ASS",
+#     "*=": "MULTIPLY_ASS",
+#     "/=": "DIVIDE_ASS",
+#     "%=": "MODULO_ASS",
+#     "+": "PLUS",
+#     "-": "MINUS",
+#     "*": "MULTIPLY",
+#     "/": "DIVIDE",
+#     "%": "MODULO",
+#     "^": "EXPONENT",
+#     "==": "EQUAL_TO",
+#     "!=": "NOT_EQUAL",
+#     ">": "GREATER_THAN",
+#     "<": "LESS_THAN",
+#     ">=": "GREATER_THAN_EQUAL",
+#     "<=": "LESS_THAN_EQUAL",
+# }
+#
+# logical_ops = {
+#     "!": "LOGICAL_NOT",
+#     "OR": "LOGICAL_OR",
+#     "AND": "LOGICAL_AND",
+# }
+#
+# unary_ops = {
+#     "!": "LOGICAL_NOT",
+#     "++": "INCREMENT",
+#     "--": "DECREMENT",
+# }
+
 keywords = {
-    "bool",
-    "def",
-    "char",
-    "when",
-    "otherwise",
-    "loop",
-    "to",
-    "input",
-    "output",
-    "stop",
-    "jump",
-    "arithSeq",
-    "arithSer",
-    "geoSeq",
-    "geoSer",
-    "distance",
-    "slope",
-    "pythagorean",
-    "quadratic",
-    "force",
-    "work",
-    "acceleration",
-    "power",
-    "momentum",
-    "potential",
-    "kinetic",
-    "toInt",
-    "toDeci",
-    "toStr"
+    "def" : "DEF",
+    "when" : "WHEN",
+    "otherwise" : "OTHERWISE",
+    "loop" : "LOOP",
+    "to" : "TO",
+    "input" : "INPUT",
+    "output" : "OUTPUT",
+    "stop" : "STOP",
+    "jump" : "JUMP",
+    "arithSeq" : "ARITHSEQ",
+    "arithSer" : "ARITHSER",
+    "geoSeq" : "GEOSEQ",
+    "geoSer" : "GEOSER",
+    "distance" : "DISTANCE",
+    "slope" : "SLOPE",
+    "pythagorean" : "PYTHAGOREAN",
+    "quadratic" : "QUADRATIC",
+    "force" : "FORCE",
+    "work" : "WORK",
+    "acceleration" : "ACCELERATION",
+    "power" : "POWER",
+    "momentum" : "MOMENTUM",
+    "potential" : "POTENTIAL",
+    "kinetic" : "KINETIC",
+    "toInt" : "TOINT",
+    "toDeci" : "TODECI",
+    "toStr" : "TOSTR"
 }
 
 reserved_words = {
-    "TRUE",
-    "FALSE",
-    "main",
-    "cont"
+    "TRUE" : "BOOL_VALUE",
+    "FALSE" : "BOOL_VALUE",
+    "main" : "MAIN",
+    "cont" : "CONT"
 }
 
 data_type = {
-    "int" : "INTEGER",
-    "str" : "STRING",
-    "char" : "CHARACTER",
-    "deci" : "DECIMAL",
-    "bool" : "BOOLEAN"
+    "int" : "DT_INT",
+    "str" : "DT_STR",
+    "char" : "DT_CHAR",
+    "deci" : "DT_DECI",
+    "bool" : "DT_BOOL"
 }
 
 noise_words = {
@@ -115,17 +147,35 @@ full_words = {
     "integer",
     "decimal",
     "string",
-    "acter",
+    "character",
     "default",
     "continue"
 }
 
 constants = {
-    "pi",
-    "accGrav",
-    "euler",
-    "goldenRatio"
+    "pi" : "PI",
+    "accGrav" : "ACCGRAV",
+    "euler" : "EULER",
+    "goldenRatio" : "GOLDENRATIO"
 }
 
-spaces = {' ', '\n', '\t'}
+spaces = {' ' : "WHITESPACE",
+          '\n' : "NEWLINE",
+          '/t' : "INDENT",
+          '        ' : "INDENT2",
+}
 
+# ALL_TOKENS = {
+#     'alphabet': alphabet,
+#     'digits': digits,
+#     'special_chars': special_chars,
+#     'delimiters': delimiters,
+#     'operators': operators,
+#     'keywords': keywords,
+#     'reserved_words': reserved_words,
+#     'data_type': data_type,
+#     'noise_words': noise_words,
+#     'full_words': full_words,
+#     'constants': constants,
+#     'spaces': spaces,
+# }

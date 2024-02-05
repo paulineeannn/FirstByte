@@ -115,7 +115,6 @@ def main(input_string):
             # Continue adding characters to the current token until a non-letter character is encountered
             while i < len(input_string) and (is_letter(input_string[i]) or is_digit(input_string[i]) or input_string[i] == '_'):
                 current_token += input_string[i]
-
                 i += 1
 
             # Check for invalid identifiers
@@ -124,8 +123,7 @@ def main(input_string):
                 i += 1
 
                 # Continue collecting characters for an invalid identifier until a space, newline, or operator is found
-                while i < len(input_string) and (input_string[i] != ' ' and input_string[i] != '\n') and input_string[
-                    i] not in operators:
+                while i < len(input_string) and (input_string[i] != ' ' and input_string[i] != '\n') and input_string[i] not in operators:
                     current_token += input_string[i]
 
                     i += 1

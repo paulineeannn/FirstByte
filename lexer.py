@@ -1,5 +1,5 @@
 from tokens import *
-
+import syntax
 
 def main(input_string):
     # Function to check if a character is a letter
@@ -58,18 +58,20 @@ def main(input_string):
                 i += 1
 
                 if input_string[i] in spaces:
-                    tokens.append(('STRING', current_token))
+                    tokens.append(('STRING', current_token, 'STRING'))
+                    tokens.append((spaces[input_string[i]], input_string[i], spaces[input_string[i]]))
                     current_token = ""  # Reset the current token
                 elif input_string[i] in delimiters:
-                    tokens.append(('STRING', current_token))
-                    tokens.append(('STRING', input_string[i]))
+                    tokens.append(('STRING', current_token, 'STRING'))
+                    tokens.append((delimiters[input_string[i]], input_string[i], delimiters[input_string[i]]))
                     current_token = ""  # Reset the current token
+
                 else:
                     while input_string[i] not in spaces:
                         current_token += input_string[i]
                         i += 1
 
-                    tokens.append(('INVALID_TOKEN', current_token))
+                    tokens.append(('INVALID_TOKEN', current_token, 'INVALID_TOKEN'))
                     current_token = ""  # Reset the current token
             i += 1
 
@@ -83,34 +85,46 @@ def main(input_string):
             current_token += char
             i += 1
 
-            tokens.append((delimiters[current_token], current_token))
+            tokens.append((delimiters[current_token], current_token, delimiters[current_token]))
             current_token = "" # Reset the current token
 
 
         # Handling comments
         elif char == '@':
-            current_token += char
-            i += 1
+            if i < len(input_string) - 1 and input_string[i + 1] == '@':  # Multi-line comment
+                i += 2  # Skip the two '@' characters
+                current_token = ""
 
-            # Check for consecutive '@' characters
-            while i < len(input_string) and input_string[i] == '@':
-                current_token += input_string[i]
-                i += 1
+                tokens.append(('COMMENT_SYM_MULTI', '@@', 'COMMENT_SYM_MULTI'))
+                while i < len(input_string) and input_string[i:i + 2] != '@@':
+                    current_token += input_string[i]
 
-            # Append the recognized special character token to the list
-            if current_token in special_chars:
-                tokens.append((special_chars[current_token], current_token))
-            else:
-                # If not recognized, consider it as an identifier
-                tokens.append(('IDENTIFIER', current_token))
+                    i += 1
 
-            current_token = ""  # Reset the current token
+                # Append multi-line comment tokens to the list
+                tokens.append(('COMMENT_MULTI', current_token, 'COMMENT_MULTI'))
 
-        # If currently inside a string or comment, continue adding characters to the current token
-        elif is_string or char == '@':
-            current_token += char
-            i += 1
+                if i < len(input_string) and input_string[i:i + 2] == '@@':
+                    tokens.append(('CHAR_COMMENT_SYM_MULTI', '@@', 'CHAR_COMMENT_SYM_MULTI'))
 
+                current_token = ""
+                i += 2  # Skip the ending '@@'
+
+            else:  # Single-line comment
+                i += 1  # Skip the initial '@'
+                current_token = ""
+
+                while i < len(input_string) and input_string[i] != "\n":
+                    current_token += input_string[i]
+                    i += 1
+
+                # Append single-line comment tokens to the list
+                tokens.append(('COMMENT_SYM_SINGLE', '@', 'CHAR_COMMENT_SYM_SINGLE'))
+                tokens.append(('COMMENT_SINGLE', current_token, 'COMMENT_SINGLE'))
+
+                current_token = ""
+
+                # Handling identifiers starting with letters
 
         elif is_letter(char):
             # Start building the current token with the first letter
@@ -133,7 +147,7 @@ def main(input_string):
                     i += 1
 
                 # Append the invalid identifier token to the list
-                tokens.append(('INVALID_TOKEN', current_token))
+                tokens.append(('INVALID_TOKEN', current_token, 'INVALID_TOKEN'))
 
 
             else:
@@ -144,54 +158,53 @@ def main(input_string):
                         # Check if the possible token is a recognized data type
                         if possible_token in data_type:
                             # Append the recognized data type token to the list
-                            tokens.append(('DATA_TYPE', possible_token))
+                            tokens.append(("DATA_TYPE", possible_token, "DATA_TYPE"))
                             current_token = current_token[j:]
                             break
 
                         # Check if the possible token is a recognized keyword
                         elif possible_token in keywords:
                             # Append the recognized keyword token to the list
-                            tokens.append(('KEYWORD', possible_token))
+                            tokens.append(('KEYWORD', possible_token, keywords[current_token]))
                             current_token = current_token[j:]
                             break
 
                         # Check if the possible token is a recognized keyword
                         elif possible_token in reserved_words:
                             # Append the recognized keyword token to the list
-                            tokens.append(('RESERVED_WORD', possible_token))
+                            tokens.append(('RESERVED_WORD', possible_token, reserved_words[current_token]))
                             current_token = current_token[j:]
                             break
 
                     if current_token:
-                        print(f"current token: {current_token}")
                         if len(tokens) > 0:
                             if current_token in noise_words and (tokens[-1][1] in data_type or tokens[-1][1] in keywords or tokens[-1][1] in reserved_words):
-                                tokens.append(('NOISE_WORD', current_token))
+                                tokens.append(('NOISE_WORD', current_token, 'NOISE_WORD'))
 
                             elif current_token in operators:
-                                tokens.append((operators[current_token], current_token))
+                                tokens.append((operators[current_token], current_token, operators[current_token]))
 
                             else:
-                                tokens.append(('IDENTIFIER', current_token))
+                                tokens.append(('IDENTIFIER', current_token, 'IDENTIFIER'))
 
 
                         elif current_token in operators:
-                            tokens.append((operators[current_token], current_token))
+                            tokens.append((operators[current_token], current_token, operators[current_token]))
 
                         else:
-                            tokens.append(('IDENTIFIER', current_token))
+                            tokens.append(('IDENTIFIER', current_token, 'IDENTIFIER'))
 
                 elif current_token in data_type:
-                    tokens.append(('DATA_TYPE', current_token))
+                    tokens.append(("DATA_TYPE", current_token, data_type[current_token]))
                 elif current_token in keywords:
-                    tokens.append(('KEYWORD', current_token))
+                    tokens.append(('KEYWORD', current_token, keywords[current_token]))
                 elif current_token in reserved_words:
-                    tokens.append(('RESERVED_WORDS', current_token))
+                    tokens.append(('RESERVED_WORDS', current_token, reserved_words[current_token]))
                 elif current_token in operators:
-                    tokens.append((operators[current_token], current_token))
+                    tokens.append((operators[current_token], current_token, operators[current_token]))
 
                 else:
-                    tokens.append(('IDENTIFIER', current_token))
+                    tokens.append(('IDENTIFIER', current_token, 'IDENTIFIER'))
 
             current_token = ""
 
@@ -220,7 +233,7 @@ def main(input_string):
                 token = 'INVALID_TOKEN'
 
             # Append the identifier or invalid identifier token to the list
-            tokens.append((token, current_token))
+            tokens.append((token, current_token, token))
             current_token = ""  # Reset the current token
 
         # Handling special characters and equal-to operator '=='
@@ -236,13 +249,13 @@ def main(input_string):
             # Check if the combined token is in special_chars or operators
             if current_token in special_chars:
                 # Append the recognized special character token to the list
-                tokens.append((special_chars[current_token], current_token))
+                tokens.append((special_chars[current_token], current_token, special_chars[current_token]))
             elif current_token in operators:
                 # Append the recognized operator token to the list
-                tokens.append((operators[current_token], current_token))
+                tokens.append((operators[current_token], current_token, operators[current_token]))
             else:
                 # If not recognized, consider it as an invalid token
-                tokens.append(("INVALID_TOKEN", current_token))
+                tokens.append(("INVALID_TOKEN", current_token, "INVALID_TOKEN"))
 
             current_token = ""  # Reset the current token
 
@@ -276,7 +289,7 @@ def main(input_string):
                     i += 1
                 token_type = "INVALID_TOKEN"
 
-            tokens.append((token_type, current_token))
+            tokens.append((token_type, current_token, token_type))
 
             current_token = ""
 
@@ -291,20 +304,31 @@ def main(input_string):
                 i += 1
 
             # Check if the combined token is in operators
-            if current_token in operators and input_string[i] in spaces:  # checks if the next char is in space
+            if current_token == "++" or current_token == "--":
+                tokens.append((operators[current_token], current_token, operators[current_token]))
+
+            elif current_token in operators and input_string[i] in spaces:  # checks if the next char is in space
                 # Append the recognized operator token to the list
-                tokens.append((operators[current_token], current_token))
+                tokens.append((operators[current_token], current_token, operators[current_token]))
+
             else:
                 # If not recognized, consider it as an invalid token
                 current_token += input_string[i]
                 i += 1
-                while i < len(input_string) and input_string[i] not in spaces:
+                while i < len(input_string) and input_string[i] not in spaces and input_string[i] not in delimiters:
                     current_token += input_string[i]
                     i += 1
-                tokens.append(("INVALID_TOKEN", current_token))
+                tokens.append(("INVALID_TOKEN", current_token, 'INVALID_TOKEN'))
 
-            i += 1
             current_token = ""  # Reset the current token
+
+        elif is_space(char):
+
+            current_token += input_string[i]
+            tokens.append((spaces[current_token], current_token, spaces[current_token]))
+            i += 1
+            current_token = ""
+
 
         # Handling invalid tokens
         elif is_invalid(char):
@@ -316,11 +340,19 @@ def main(input_string):
                 i += 1
 
             # Append the invalid token with its type
-            tokens.append(('INVALID_TOKEN', current_token))
+            tokens.append(('INVALID_TOKEN', current_token, 'INVALID_TOKEN'))
             current_token = ""
+
 
         else:
             i += 1
 
     # return list for symbol table
     return tokens
+
+
+def call_syntax(input_string):
+    tokens = main(input_string)
+    result_syntax = syntax.main(tokens)
+
+    return result_syntax
