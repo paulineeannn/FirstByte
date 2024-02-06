@@ -481,9 +481,12 @@ STATEMENTS_LIST = [DECLARATION_STMT, ASSIGNMENT_STMT, INPUT_STMT, OUTPUT_STMT, A
                    BOOLEAN_RELATION, CONDITIONAL_STMT, NEW_PRINCIPLES, ITERATIVE_STMT, BODY_STMT]
 combined_list = sum(STATEMENTS_LIST, [])
 
-
+# accept indented
 for x in combined_list:
     indented = f"<WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE>{x}"
+    BODY_STMT.append(indented)
+
+    indented = f"<WHITESPACE><INDENT>{x}"
     BODY_STMT.append(indented)
 
     indented = f"<INDENT>{x}"
@@ -492,8 +495,31 @@ for x in combined_list:
     indented = f"<INDENT2>{x}"
     BODY_STMT.append(indented)
 
-    indented = f"<INVALID_TOKEN>{x}"
+    indented = f"<INDENT><INDENT>{x}"
     BODY_STMT.append(indented)
+
+    indented = f"<INDENT2><INDENT2>{x}"
+    BODY_STMT.append(indented)
+
+    indented = f"<INDENT><INDENT><INDENT>{x}"
+    BODY_STMT.append(indented)
+
+    indented = f"<INDENT2><INDENT2><INDENT2>{x}"
+    BODY_STMT.append(indented)
+
+# handle line of codes that have whitespace/indent in the end of line
+for x in combined_list:
+    excess_space = f"{x}<INDENT>"
+    BODY_STMT.append(excess_space)
+
+    excess_space = f"{x}<WHITESPACE>"
+    BODY_STMT.append(excess_space)
+
+    excess_space = f"<WHITESPACE><WHITESPACE>{x}"
+    BODY_STMT.append(excess_space)
+
+    excess_space = f"<WHITESPACE><WHITESPACE><WHITESPACE>{x}"
+    BODY_STMT.append(excess_space)
 
 for x in combined_list:
     comment_s = f"{x}<WHITESPACE><CHAR_COMMENT_SYM_SINGLE><COMMENT_SINGLE>"

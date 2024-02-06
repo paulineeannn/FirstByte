@@ -54,39 +54,6 @@ operators= {
     "<=" : "LESS_THAN_EQUAL",
 }
 
-# binary_ops = {
-#     "=": "EQUAL",
-#     "+=": "ADD_ASS",
-#     "-=": "SUBTRACT_ASS",
-#     "*=": "MULTIPLY_ASS",
-#     "/=": "DIVIDE_ASS",
-#     "%=": "MODULO_ASS",
-#     "+": "PLUS",
-#     "-": "MINUS",
-#     "*": "MULTIPLY",
-#     "/": "DIVIDE",
-#     "%": "MODULO",
-#     "^": "EXPONENT",
-#     "==": "EQUAL_TO",
-#     "!=": "NOT_EQUAL",
-#     ">": "GREATER_THAN",
-#     "<": "LESS_THAN",
-#     ">=": "GREATER_THAN_EQUAL",
-#     "<=": "LESS_THAN_EQUAL",
-# }
-#
-# logical_ops = {
-#     "!": "LOGICAL_NOT",
-#     "OR": "LOGICAL_OR",
-#     "AND": "LOGICAL_AND",
-# }
-#
-# unary_ops = {
-#     "!": "LOGICAL_NOT",
-#     "++": "INCREMENT",
-#     "--": "DECREMENT",
-# }
-
 keywords = {
     "def" : "DEF",
     "when" : "WHEN",
@@ -161,21 +128,6 @@ constants = {
 
 spaces = {' ' : "WHITESPACE",
           '\n' : "NEWLINE",
-          '/t' : "INDENT",
+          '\t' : "INDENT",
           '        ' : "INDENT2",
 }
-
-# ALL_TOKENS = {
-#     'alphabet': alphabet,
-#     'digits': digits,
-#     'special_chars': special_chars,
-#     'delimiters': delimiters,
-#     'operators': operators,
-#     'keywords': keywords,
-#     'reserved_words': reserved_words,
-#     'data_type': data_type,
-#     'noise_words': noise_words,
-#     'full_words': full_words,
-#     'constants': constants,
-#     'spaces': spaces,
-# }

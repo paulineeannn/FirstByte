@@ -1,10 +1,6 @@
 from production_rules import *
 from tokens import spaces
-import textwrap
 
-def is_indented(code):
-    dedented = textwrap.dedent(code)
-    return dedented != code
 def main(tokens):
 
     # List to store the identified syntax
@@ -30,6 +26,7 @@ def main(tokens):
 
             token = ""  # reset
             code = ""
+
         # create a string containing tokens of one line
         else:
             format_token = f"<{tokens[x][2]}>"
