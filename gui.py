@@ -2,7 +2,6 @@ from tkinter import filedialog, messagebox, ttk, VERTICAL, Scrollbar
 import customtkinter
 from PIL import Image
 from tkinter.filedialog import askopenfile
-
 from prettytable import PrettyTable
 
 import lexer
@@ -133,6 +132,8 @@ def command_lexical():
                                                  command=lambda: export_symboltable(result))
         button_export.place(x=1277, y=85)
 
+    table_result.heading('Lexemes', text='Lexemes')
+    table_result.heading('Token', text='Token')
 
 def command_syntax():
     global home
@@ -175,6 +176,9 @@ def command_syntax():
                                                 command=lambda: export_syntax(result))
         button_export.place(x=1277, y=85)
 
+    table_result.heading('Lexemes', text='Code')
+    table_result.heading('Token', text='Validation Result')
+
 def command_new():
     textbox_code.configure(state="normal")
     textbox_code.delete("1.0", "end")
@@ -192,7 +196,7 @@ def command_new():
 if __name__ == "__main__":
     # create window and configure its properties
     window = customtkinter.CTk(fg_color="#171717")
-    window.title("FirstByte - Lexical Analyzer")
+    window.title("FirstByte - Lexical and Syntax Analyzer")
 
     # set dark mode to true
     mode_dark = True
