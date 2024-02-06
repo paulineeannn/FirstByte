@@ -74,6 +74,20 @@ def export_symboltable(tokens):
 
     messagebox.showinfo("Export Successful", "Symbol Table exported to SymbolTable.txt")
 
+
+def export_syntax(tokens):
+    with open("SyntaxAnalyzer.txt", "w") as file:
+        table = PrettyTable()
+        table.field_names = (['Code', 'Validation Result'])
+
+        for token, lexeme in tokens:
+            table.add_row([lexeme, token])
+
+        table = str(table)
+        file.write(table)
+
+    messagebox.showinfo("Export Successful", "Syntax Analyzer exported to SyntaxAnalyzer.txt")
+
 def command_lexical():
     global home
     home = False
@@ -158,7 +172,7 @@ def command_syntax():
                                                 text="Export", font=("Arial", 13, "bold"),
                                                 corner_radius=10, height=32, width=132,
                                                 fg_color="#75C752", hover_color="#5F9F44",
-                                                command=lambda: export_symboltable(result))
+                                                command=lambda: export_syntax(result))
         button_export.place(x=1277, y=85)
 
 def command_new():
