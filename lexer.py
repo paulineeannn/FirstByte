@@ -57,22 +57,22 @@ def main(input_string):
                 current_token += char
                 i += 1
 
-                if input_string[i] in spaces:
+                if len(current_token) == 3 and current_token[1].isalpha():  # Check if current_token is a single alphabet enclosed in double quotes
+                    tokens.append(('CHAR', current_token, 'CHAR'))
+                else:
                     tokens.append(('STRING', current_token, 'STRING'))
-                    tokens.append((spaces[input_string[i]], input_string[i], spaces[input_string[i]]))
-                    current_token = ""  # Reset the current token
-                elif input_string[i] in delimiters:
-                    tokens.append(('STRING', current_token, 'STRING'))
-                    tokens.append((delimiters[input_string[i]], input_string[i], delimiters[input_string[i]]))
-                    current_token = ""  # Reset the current token
 
+                if input_string[i] in spaces:
+                    tokens.append((spaces[input_string[i]], input_string[i], spaces[input_string[i]]))
+                elif input_string[i] in delimiters:
+                    tokens.append((delimiters[input_string[i]], input_string[i], delimiters[input_string[i]]))
                 else:
                     while input_string[i] not in spaces:
                         current_token += input_string[i]
                         i += 1
-
                     tokens.append(('INVALID_TOKEN', current_token, 'INVALID_TOKEN'))
-                    current_token = ""  # Reset the current token
+
+                current_token = ""  # Reset the current token
             i += 1
 
         # If currently inside a string, continue adding characters to the current token
