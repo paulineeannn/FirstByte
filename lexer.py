@@ -202,6 +202,8 @@ def main(input_string):
                     tokens.append(('RESERVED_WORDS', current_token, reserved_words[current_token]))
                 elif current_token in operators:
                     tokens.append((operators[current_token], current_token, operators[current_token]))
+                elif current_token in constants:
+                    tokens.append(('CONSTANT', current_token, 'CONSTANT'))
 
                 else:
                     tokens.append(('IDENTIFIER', current_token, 'IDENTIFIER'))
@@ -323,10 +325,11 @@ def main(input_string):
             current_token = ""  # Reset the current token
 
         elif is_space(char):
-
             current_token += input_string[i]
-            tokens.append((spaces[current_token], current_token, spaces[current_token]))
             i += 1
+
+            tokens.append((spaces[current_token], current_token, spaces[current_token]))
+
             current_token = ""
 
 
