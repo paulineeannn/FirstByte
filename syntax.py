@@ -1,37 +1,42 @@
 from production_rules import *
 from tokens import spaces
+import errors
 
-def main(tokens):
+def main(token_list):
 
     # List to store the identified syntax
-    syntax_result = []
-    token = ""
+    invalid_list = []
+    formatted_token = ""
     code = ""
-    for x in range(len(tokens)):
+    line = 0
+    for x in range(len(token_list)):
         valid = False
 
-        # check if the tokens of one line exist in the production rules
-        if tokens[x][0] == "NEWLINE":
-
+        # check if the token of one line exist in the production rules
+        if token_list[x][0] == "NEWLINE":
+            line += 1
             for statement in STATEMENTS_LIST:
-                if token in statement:
+                if formatted_token in statement:
                     valid = True
 
-            print(token)
+            print(formatted_token)
             if valid:
-                syntax_result.append(("VALID", code))
+                # alisin comment symbol pag ipapasa na
+                print("")
+                #invalid_list.append((line, "VALID", code)) # for checking lang, paki comment pag ipapasa na
 
             elif not valid and (code not in spaces and code != ""):
-                syntax_result.append(("INVALID", code))
+                error_message = errors.find_error(formatted_token)
+                invalid_list.append((line, code, error_message))
 
-            token = ""  # reset
+            formatted_token = ""  # reset
             code = ""
 
-        # create a string containing tokens of one line
+        # create a string containing token of one line
         else:
-            format_token = f"<{tokens[x][2]}>"
-            token += format_token
-            code +=  f"{tokens[x][1]}"
+            format_token = f"<{token_list[x][2]}>"
+            formatted_token += format_token
+            code +=  f"{token_list[x][1]}"
 
 
-    return syntax_result
+    return invalid_list

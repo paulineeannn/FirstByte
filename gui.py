@@ -2,11 +2,11 @@ from tkinter import filedialog, messagebox, ttk, VERTICAL, Scrollbar
 import customtkinter
 from PIL import Image
 from tkinter.filedialog import askopenfile
-
 from prettytable import PrettyTable
 
 import lexer
 import syntax
+
 
 def command_upload():
     file_path = filedialog.askopenfilename(initialdir='/documents', title='Select a File', filetypes=(("FirstByte files", "*.fb"),))
@@ -88,6 +88,7 @@ def export_syntax(tokens):
 
     messagebox.showinfo("Export Successful", "Syntax Analyzer exported to SyntaxAnalyzer.txt")
 
+
 def command_lexical():
     global home
     home = False
@@ -104,7 +105,6 @@ def command_lexical():
         button_lexical.place_forget()
         button_upload.place_forget()
         button_syntax.place_forget()
-        
 
         global button_new, button_export
         button_new = customtkinter.CTkButton(window, text="New Code", font=("Arial", 13, "bold"),
@@ -119,19 +119,22 @@ def command_lexical():
         code = textbox_code.get("0.0", "end")
         result = lexer.main(code)
 
+
         for token in result:
             token_type, lexeme = token[0], token[1]
-            if token_type != "NEWLINE" and token_type != "WHITESPACE":
+            if token_type != "NEWLINE" and token_type != "WHITESPACE" and token_type != "INDENT":
                 print(token_type)
                 table_result.insert('', 'end', values=(lexeme, token_type))
-            
-        
+
         button_export = customtkinter.CTkButton(window,
-                                                 text="Export", font=("Arial", 13, "bold"),
-                                                 corner_radius=10, height=32, width=132,
-                                                 fg_color="#75C752", hover_color="#5F9F44",
-                                                 command=lambda: export_symboltable(result))
+                                                text="Export", font=("Arial", 13, "bold"),
+                                                corner_radius=10, height=32, width=132,
+                                                fg_color="#75C752", hover_color="#5F9F44",
+                                                command=lambda: export_symboltable(result))
         button_export.place(x=1277, y=85)
+
+    table_result.heading('Lexemes', text='Lexemes')
+    table_result.heading('Token', text='Token')
 
 
 def command_syntax():
@@ -164,9 +167,6 @@ def command_syntax():
         code = textbox_code.get("0.0", "end")
         result = lexer.call_syntax(code)
 
-        for token in result:
-            token_type, lexeme = token[0], token[1]
-            table_result.insert('', 'end', values=(lexeme, token_type))
 
         button_export = customtkinter.CTkButton(window,
                                                 text="Export", font=("Arial", 13, "bold"),
@@ -175,6 +175,20 @@ def command_syntax():
                                                 command=lambda: export_syntax(result))
         button_export.place(x=1277, y=85)
 
+        if len(result) == 0:
+            messagebox.showinfo("ANGAS MO LODS!", "yazz kweenn slayy pur pur")
+
+        else:
+            messagebox.showerror("BONAK!", "ayusin mo kasi syntax mong bonak ka")
+
+            for token in result:
+                line, code, error = token[0], token[1], token[2]
+                table_result.insert('', 'end', values=(line, code, error))
+
+    table_result.heading('Lexemes', text='Code')
+    table_result.heading('Token', text='Error Description')
+
+
 def command_new():
     textbox_code.configure(state="normal")
     textbox_code.delete("1.0", "end")
@@ -182,17 +196,17 @@ def command_new():
     # delete treeview -------------------------------------------------------------------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!
     button_new.place_forget()
     button_export.place_forget()
-    button_switch.place(x=849, y=85)
-    button_upload.place(x=438, y=85)
-    button_lexical.place(x=575, y=85)
-    button_syntax.place(x=712, y=85)
+    button_switch.place(x=799, y=85)
+    button_upload.place(x=388, y=85)
+    button_lexical.place(x=525, y=85)
+    button_syntax.place(x=662, y=85)
     table_result.delete(*table_result.get_children())
 
 
 if __name__ == "__main__":
     # create window and configure its properties
     window = customtkinter.CTk(fg_color="#171717")
-    window.title("FirstByte - Lexical Analyzer")
+    window.title("FirstByte - Lexical and Syntax Analyzer")
 
     # set dark mode to true
     mode_dark = True
@@ -210,48 +224,51 @@ if __name__ == "__main__":
     window.resizable(0, 0)
 
     img_logo_dark = customtkinter.CTkImage(light_image=Image.open("logo-dark.png"),
-                                        size=(219, 59))
+                                           size=(219, 59))
 
     img_logo_light = customtkinter.CTkImage(light_image=Image.open("logo-light.png"),
-                                        size=(219, 59))
+                                            size=(219, 59))
 
     label_logo = customtkinter.CTkLabel(window, image=img_logo_dark, text="")
     label_logo.place(x=71, y=65)
 
-    textbox_code = customtkinter.CTkTextbox(window, width=829, height=577, fg_color="#292929", text_color="#FFFFFF", font=("Consolas", 16))
+    textbox_code = customtkinter.CTkTextbox(window, width=780, height=577, fg_color="#292929", text_color="#FFFFFF",
+                                            font=("Consolas", 16))
     textbox_code.place(x=62, y=141)
 
-
     button_upload = customtkinter.CTkButton(window,
-                                          text="Upload Code",font=("Arial", 13, "bold"),
-                                          corner_radius=10, height=32, width=132,
-                                          fg_color="#FFFFFF", text_color="#75C752", hover_color="#DCDCDC", command=command_upload)
-    button_upload.place(x=438, y=85)
+                                            text="Upload Code", font=("Arial", 13, "bold"),
+                                            corner_radius=10, height=32, width=132,
+                                            fg_color="#FFFFFF", text_color="#75C752", hover_color="#DCDCDC",
+                                            command=command_upload)
+    button_upload.place(x=388, y=85)
 
     button_lexical = customtkinter.CTkButton(window,
-                                          text="Lexical Analyzer",font=("Arial", 13, "bold"),
-                                          corner_radius=10, height=32, width=132,
-                                          fg_color="#75C752", hover_color="#5F9F44", command=command_lexical)
-    button_lexical.place(x=575, y=85)
-    
+                                             text="Lexical Analyzer", font=("Arial", 13, "bold"),
+                                             corner_radius=10, height=32, width=132,
+                                             fg_color="#75C752", hover_color="#5F9F44", command=command_lexical)
+    button_lexical.place(x=525, y=85)
+
     button_syntax = customtkinter.CTkButton(window,
-                                          text="Syntax Analyzer",font=("Arial", 13, "bold"),
-                                          corner_radius=10, height=32, width=132,
-                                          fg_color="#548F3B", hover_color="#5F9F44", command=command_syntax)
-    button_syntax.place(x=712, y=85)
+                                            text="Syntax Analyzer", font=("Arial", 13, "bold"),
+                                            corner_radius=10, height=32, width=132,
+                                            fg_color="#548F3B", hover_color="#5F9F44", command=command_syntax)
+    button_syntax.place(x=662, y=85)
 
     img_light = customtkinter.CTkImage(light_image=Image.open("button-light.png"),
-                                        size=(23, 23))
+                                       size=(23, 23))
 
     img_dark = customtkinter.CTkImage(light_image=Image.open("button-dark.png"),
-                                        size=(21, 21))
+                                      size=(21, 21))
 
-    button_switch = customtkinter.CTkButton(window,image=img_light, text="", width=15, height=15, border_width=2, border_color="#7ED957",
-                                          corner_radius=10, fg_color="transparent", hover_color="#5F9F44", command=lambda: command_color(home, mode_dark))
-    button_switch.place(x=849, y=85)
+    button_switch = customtkinter.CTkButton(window, image=img_light, text="", width=15, height=15, border_width=2,
+                                            border_color="#7ED957",
+                                            corner_radius=10, fg_color="transparent", hover_color="#5F9F44",
+                                            command=lambda: command_color(home, mode_dark))
+    button_switch.place(x=799, y=85)
 
-    frame_result = customtkinter.CTkFrame(window, width=547, height=577, fg_color="#171717")
-    frame_result.place(x=913, y=141)
+    frame_result = customtkinter.CTkFrame(window, width=680, height=577, fg_color="#171717")
+    frame_result.place(x=860, y=141)
 
     global table_result
 
@@ -260,28 +277,29 @@ if __name__ == "__main__":
 
     # Configure the style properties for the heading
     style.configure("Custom.Treeview.Heading",
-                    font=("Arial", 15, "bold"))
+                    font=("Arial", 13, "bold"))
 
     # Configure the Treeview widget style
     style.configure("Custom.Treeview",
-                    font=("Arial", 13),
+                    font=("Arial", 11),
                     rowheight=30)
 
-    table_result = ttk.Treeview(frame_result, style="Custom.Treeview", columns=('Lexemes', 'Token'))
+    table_result = ttk.Treeview(frame_result, style="Custom.Treeview", columns=('Line', 'Lexemes', 'Token'))
     table_result.heading('#0', text="")
     table_result.column("#0", width=1, minwidth=1)  # Index column
+    table_result.heading('Line', text='Line')
     table_result.heading('Lexemes', text='Lexemes')
     table_result.heading('Token', text='Token')
-    table_result.column('Lexemes', minwidth=280, width=335)
-    table_result.column('Token', minwidth=280, width=335)
+    table_result.column('Line', minwidth=50, width=50)
+    table_result.column('Lexemes', minwidth=100, width=270)
+    table_result.column('Token', minwidth=100, width=430)
     table_result.place(x=0, y=0)
 
     scrollbar = Scrollbar(frame_result, orient=VERTICAL, command=table_result.yview)
     table_result.configure(yscrollcommand=scrollbar.set)
-    scrollbar.place(x=660, y=1, height=715)
+    scrollbar.place(x=740, y=1, height=715)
 
     # Change the height of the entire table
     table_result['height'] = 23
-
 
     window.mainloop()

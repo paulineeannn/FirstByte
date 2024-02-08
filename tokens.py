@@ -29,18 +29,18 @@ delimiters = {
 }
 
 operators= {
-    "=": "EQUAL",
+    "=": "ASS_OP",
     "+=" : "ADD_ASS",
     "-=" : "SUBTRACT_ASS",
     "*=" : "MULTIPLY_ASS",
     "/=" : "DIVIDE_ASS",
     "%=" : "MODULO_ASS",
-    "++" : "INCREMENT", # unary
-    "--" : "DECREMENT", # unary
-    "+": "PLUS",    # arithmetic op
-    "-": "MINUS",   # arithmetic op
-    "*": "MULTIPLY",    # arithmetic op
-    "/": "DIVIDE",  # arithmetic op
+    "++" : "INCREMENT",
+    "--" : "DECREMENT",
+    "+": "PLUS",
+    "-": "MINUS",
+    "*": "MULTIPLY",
+    "/": "DIVIDE",
     "%": "MODULO",
     "^": "EXPONENT",
     "!": "LOGICAL_NOT",
@@ -50,8 +50,8 @@ operators= {
     "!=": "NOT_EQUAL",
     ">" : "GREATER_THAN",
     "<" : "LESS_THAN",
-    ">=" : "GREATER_THAN_EQUAL",
-    "<=" : "LESS_THAN_EQUAL",
+    ">=" : "GREATER_THAN_EQ",
+    "<=" : "LESS_THAN_EQ",
 }
 
 keywords = {
