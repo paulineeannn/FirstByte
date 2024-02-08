@@ -136,7 +136,6 @@ def command_lexical():
     table_result.heading('Lexemes', text='Lexemes')
     table_result.heading('Token', text='Token')
 
-
 def command_syntax():
     global home
     home = False
@@ -175,19 +174,8 @@ def command_syntax():
                                                 command=lambda: export_syntax(result))
         button_export.place(x=1277, y=85)
 
-        if len(result) == 0:
-            messagebox.showinfo("ANGAS MO LODS!", "yazz kweenn slayy pur pur")
-
-        else:
-            messagebox.showerror("BONAK!", "ayusin mo kasi syntax mong bonak ka")
-
-            for token in result:
-                line, code, error = token[0], token[1], token[2]
-                table_result.insert('', 'end', values=(line, code, error))
-
     table_result.heading('Lexemes', text='Code')
-    table_result.heading('Token', text='Error Description')
-
+    table_result.heading('Token', text='Validation Result')
 
 def command_new():
     textbox_code.configure(state="normal")
