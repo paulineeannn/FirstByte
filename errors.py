@@ -11,6 +11,10 @@ def find_error(token):
     if token in DATA_TYPES:
         return 'DeclarationError: Variable name required'
 
+    # e.g x <=
+    elif ("<IDENTIFIER>" in token or "<INTEGER>" in token or "<DECIMAL>" in token or "<BOOL_VALUE>" in token or "<STRING>" in token) and "<WHITESPACE>" in token and ("<EQUAL_TO>" in token or "<NOT_EQUAL>" in token or "<GREATER_THAN>" in token or "<LESS_THAN>" in token or "<GREATER_THAN_EQ>" in token or "<LESS_THAN_EQ>" in token):
+        return "SyntaxError: Right-hand operand required"
+
     elif (token.startswith('<IDENTIFIER>')):
         return 'TypeError: Variable must be declared with a data type'
 
@@ -131,17 +135,80 @@ def find_error(token):
     elif any(operator in token for operator in ARITHMETIC_OPS) and "<DT_BOOL>" in token and (('<DECIMAL>' in token) or ('<STRING>' in token) or ('<INTEGER>' in token) or ('<INTEGER>' in token)):
         return "ValueError: Invalid value for bool data type"
 
-    # errors for arithmetic operator
+    # loop i = 1 to 10
+    elif "<LOOP><WHITESPACE><IDENTIFIER><WHITESPACE><ASS_OP><WHITESPACE><INTEGER><WHITESPACE><TO><WHITESPACE><INTEGER>" in token:
+        return "SyntaxError: Missing loop variable update expression"
 
-    # errors for unary operator
+    # loop i = 0 to (i ++):
+    elif "<LOOP><WHITESPACE><IDENTIFIER><WHITESPACE><ASS_OP><WHITESPACE><INTEGER><WHITESPACE><TO>" in token:
+        return "SyntaxError: Missing loop limit value"
 
-    # errors for boolean logic
+    # e.g. loop i = 1 10 (i ++):
+    elif "<LOOP><WHITESPACE><IDENTIFIER><WHITESPACE><ASS_OP><WHITESPACE><INTEGER>" in token:
+        return "SyntaxError: 'to' keyword missing"
 
-    # errors for boolean relation
+    # e.g. loop i = to 10 (i ++):
+    elif "<LOOP><WHITESPACE><IDENTIFIER><WHITESPACE><ASS_OP>" in token:
+        return "SyntaxError: Missing loop variable initialization"
+
+    # e.g int ++
+    elif "<DT_INT><WHITESPACE>" in token and ("<INCREMENT>" in token or "<DECREMENT>" in token):
+        return "SyntaxError: Identifier or Integer required"
+    
+    # e.g ++
+    elif "<INCREMENT>" in token or "<DECREMENT>" in token:
+        return "SyntaxError: Identifier or Integer required"
+    
+    # e.g AND z
+    elif ("<LOGICAL_OR>" in token or "<LOGICAL_AND>" in token) and "<WHITESPACE><IDENTIFIER>" in token:
+        return "SyntaxError: Identifier required"
+    
+    # e.g TRUE OR
+    elif "<BOOL_VALUE><WHITESPACE>" in token and ("<LOGICAL_NOT>" in token or "<LOGICAL_OR>" in token or "<LOGICAL_AND>" in token):
+        return "SyntaxError: Boolean value required"
+    
+    # e.g ! FALSE
+    elif ("<LOGICAL_NOT>" in token or "<LOGICAL_OR>" in token or "<LOGICAL_AND>" in token) and "<WHITESPACE><BOOL_VALUE>" in token:
+        return "SyntaxError: Boolean value required"
+    
+    # e.g !
+    elif "<LOGICAL_NOT>" in token:
+        return "SyntaxError: Identifier required"
+
+    # e.g <= x
+    elif ("<EQUAL_TO>" in token or "<NOT_EQUAL>" in token or "<GREATER_THAN>" in token or "<LESS_THAN>" in token or "<GREATER_THAN_EQ>" in token or "<LESS_THAN_EQ>" in token) and "<WHITESPACE>" in token and ("<IDENTIFIER>" in token or "<INTEGER>" in token or "<DECIMAL>" in token or "<BOOL_VALUE>" in token or "<STRING>" in token):
+        return "SyntaxError: Left-hand operand required"
+
+    # e.g - 3
+    elif any(operator in token for operator in ARITHMETIC_OPS) and "<WHITESPACE>" in token and ("INTEGER" in token or "DECIMAL" in token):
+        return "SyntaxError: Missing operand"
+
+    # e.g 3 +
+    elif ("INTEGER" in token or "DECIMAL" in token) and "<WHITESPACE>" in token and any(operator in token for operator in ARITHMETIC_OPS) and ("INTEGER" in token or "DECIMAL" in token):
+        return "SyntaxError: Missing operand"
+
+    # e.g 3 4
+    elif ("INTEGER" in token or "DECIMAL" in token) and "<WHITESPACE>" in token and ("INTEGER" in token or "DECIMAL" in token):
+        return "SyntaxError: Missing operator between operands"
+
+    # # e.g. x > y AMD u <= z
+    # for x in BOOLEAN_RELATION:
+    #     for y in BOOLEAN_RELATION:
+    #         BOOLEAN_LOGIC.append(f"{x}<WHITESPACE><LOGICAL_NOT><WHITESPACE>{y}")
+    #         BOOLEAN_LOGIC.append(f"{x}<WHITESPACE><LOGICAL_OR><WHITESPACE>{y}")
+    #         BOOLEAN_LOGIC.append(f"{x}<WHITESPACE><LOGICAL_AND><WHITESPACE>{y}")
+
+    # # e.g. x + y == x - y
+    # for x in ARITHMETIC_OPERATOR:
+    #     for y in ARITHMETIC_OPERATOR:
+    #         BOOLEAN_RELATION.append(f"{x}<WHITESPACE><EQUAL_TO><WHITESPACE>{y}")
+    #         BOOLEAN_RELATION.append(f"{x}<WHITESPACE><NOT_EQUAL><WHITESPACE>{y}")
+    #         BOOLEAN_RELATION.append(f"{x}<WHITESPACE><GREATER_THAN><WHITESPACE>{y}")
+    #         BOOLEAN_RELATION.append(f"{x}<WHITESPACE><LESS_THAN><WHITESPACE>{y}")
+    #         BOOLEAN_RELATION.append(f"{x}<WHITESPACE><GREATER_THAN_EQ><WHITESPACE>{y}")
+    #         BOOLEAN_RELATION.append(f"{x}<WHITESPACE><LESS_THAN_EQ><WHITESPACE>{y}")
 
     # errors for conditional statement
-
-    # errors for iterative statement
 
     # errors for new principles
     elif any(principle in token for principle in NEW_PRINCIPLES) and "<INTEGER>" not in token and "<IDENTIFIER>" not in token and '<PARENTHESIS_OPEN><PARENTHESIS_CLOSE>' in token:
@@ -177,6 +244,3 @@ def find_error(token):
 
     elif '<INVALID_TOKEN>' in token:
         return 'Invalid token found'
-
-    
-        
