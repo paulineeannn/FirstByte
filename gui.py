@@ -176,11 +176,9 @@ def command_syntax():
         button_export.place(x=1277, y=85)
 
         if len(result) == 0:
-            messagebox.showinfo("ANGAS MO LODS!", "yazz kweenn slayy pur pur")
+            messagebox.showinfo("Syntax Analysis Successful", "No syntax errors found.")
 
         else:
-            messagebox.showerror("BONAK!", "ayusin mo kasi syntax mong bonak ka")
-
             for token in result:
                 line, code, error = token[0], token[1], token[2]
                 table_result.insert('', 'end', values=(line, code, error))
