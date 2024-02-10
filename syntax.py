@@ -34,4 +34,4 @@ def main(token_list):
             code +=  f"{token_list[x][1]}"
 
 
-    return invalid_list
+    return line, invalid_list
