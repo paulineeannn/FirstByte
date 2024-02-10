@@ -21,9 +21,9 @@ and principles of programming.
 
 ## How to Run the Project
 
-1. Clone the repository: `git clone [repository_url]`
+1. Clone the repository: `git clone https://github.com/paulineeannn/FirstByte`
 2. Navigate to the project directory: `cd FirstByte`
-3. Install required libraries: `pip install customtkinter prettytable`
+3. Install required libraries: `pip install customtkinter PILLOW prettytable`
 4. Run the GUI application by executing the `gui.py` file:
 
 ## Documentation
