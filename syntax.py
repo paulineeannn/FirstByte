@@ -20,12 +20,7 @@ def main(token_list):
                     valid = True
 
             print(formatted_token)
-            if valid:
-                # alisin comment symbol pag ipapasa na
-                print("")
-                #invalid_list.append((line, "VALID", code)) # for checking lang, paki comment pag ipapasa na
-
-            elif not valid and (code not in spaces and code != ""):
+            if not valid and (code not in spaces and code != ""):
                 error_message = errors.find_error(formatted_token)
                 invalid_list.append((line, code, error_message))
 
