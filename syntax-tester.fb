@@ -1,0 +1,29 @@
+int n1 = 7
+int n2 n3
+int n3 = 4, n5 = 6
+str n6 = 5
+n7 = 2
+
+@ constants
+bool g = accGrav @ accGrav is decimal
+
+when(n1 <= n2):
+	output("Ascending order: n1, n2")
+
+otherwise when(n3 > n1 AND n4 = n2):
+	output("Ascending order: n1, n3, n4, n2")
+
+otherwise when(10):
+	output("Ascending order: 10")
+
+otherwise:
+	loop i = 0 to 5 (i ++):
+		output("i = " , i)
+
+loop 1 to 5 (i ++):
+	output()
+
+bool number = input()
+int value_force = force(10, 2)
+int value_force = force(10, 2, 3)
+int power = power(1 2)
