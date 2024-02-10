@@ -66,8 +66,12 @@ def export_symboltable(tokens):
         table = PrettyTable()
         table.field_names = (['Lexeme', 'Token'])
 
-        for token, lexeme in tokens:
-            table.add_row([lexeme, token])
+        for lexemes in tokens:
+            token = lexemes[0]
+            lexeme = lexemes[1]
+
+            if token != "NEWLINE" and token != "WHITESPACE" and token != "INDENT":
+                table.add_row([lexeme, token])
 
         table = str(table)
         file.write(table)
@@ -75,13 +79,14 @@ def export_symboltable(tokens):
     messagebox.showinfo("Export Successful", "Symbol Table exported to SymbolTable.txt")
 
 
-def export_syntax(tokens):
+def export_syntax(result):
     with open("SyntaxAnalyzer.txt", "w") as file:
         table = PrettyTable()
-        table.field_names = (['Code', 'Validation Result'])
+        table.field_names = (['Line', 'Code', 'Error Description'])
 
-        for token, lexeme in tokens:
-            table.add_row([lexeme, token])
+        for token in result:
+            line, code, error = token[0], token[1], token[2]
+            table.add_row([line, code, error])
 
         table = str(table)
         file.write(table)
@@ -123,8 +128,7 @@ def command_lexical():
         for token in result:
             token_type, lexeme = token[0], token[1]
             if token_type != "NEWLINE" and token_type != "WHITESPACE" and token_type != "INDENT":
-                print(token_type)
-                table_result.insert('', 'end', values=(lexeme, token_type))
+                table_result.insert('', 'end', values=('', lexeme, token_type))
 
         button_export = customtkinter.CTkButton(window,
                                                 text="Export", font=("Arial", 13, "bold"),
