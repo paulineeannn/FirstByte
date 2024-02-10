@@ -1,0 +1,15 @@
++------+---------------------------------------+-------------------------------------------------------+
+| Line |                  Code                 |                   Error Description                   |
++------+---------------------------------------+-------------------------------------------------------+
+|  2   |               int n2 n3               |       DeclarationError: Comma separator required      |
+|  4   |               str n6 = 5              |      ValueError: Invalid value for str data type      |
+|  5   |                 n7 = 2                | TypeError: Variable must be declared with a data type |
+|  8   | bool g = accGrav @ accGrav is decimal |      ValueError: Invalid value for bool data type     |
+|  13  |  otherwise when(n3 > n1 AND n4 = n2): |             SyntaxError: Invalid condition            |
+|  16  |          otherwise when(10):          |             SyntaxError: Invalid condition            |
+|  23  |          loop 1 to 5 (i ++):          |   SyntaxError: Missing loop variable initialization   |
+|  24  |                    	output()                    |       Output requires content inside parentheses      |
+|  26  |         bool number = input()         |      ValueError: Invalid value for bool data type     |
+|  28  |   int value_force = force(10, 2, 3)   |           SyntaxError: Expected 2 parameters          |
+|  29  |         int power = power(1 2)        |   SyntaxError: Parameters must be separated by comma  |
++------+---------------------------------------+-------------------------------------------------------+
