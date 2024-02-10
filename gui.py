@@ -105,6 +105,7 @@ def command_lexical():
     if not content:
         messagebox.showerror("Error", "Please type a code")
     else:
+        textbox_linenum.configure(state="normal")
         textbox_code.configure(state="disabled")
         button_switch.place(x=1414, y=85)
         button_lexical.place_forget()
@@ -123,7 +124,6 @@ def command_lexical():
 
         code = textbox_code.get("0.0", "end")
         result = lexer.main(code)
-
 
         for token in result:
             token_type, lexeme = token[0], token[1]
@@ -152,6 +152,7 @@ def command_syntax():
     if not content:
         messagebox.showerror("Error", "Please type a code")
     else:
+        textbox_linenum.configure(state="normal")
         textbox_code.configure(state="disabled")
         button_switch.place(x=1414, y=85)
         button_lexical.place_forget()
@@ -169,9 +170,7 @@ def command_syntax():
         button_switch.configure(command=lambda: command_color(home, mode_dark))
 
         code = textbox_code.get("0.0", "end")
-        result = lexer.call_syntax(code)
-
-
+        line_numbers, result = lexer.call_syntax(code)
         button_export = customtkinter.CTkButton(window,
                                                 text="Export", font=("Arial", 13, "bold"),
                                                 corner_radius=10, height=32, width=132,
@@ -187,6 +186,12 @@ def command_syntax():
                 line, code, error = token[0], token[1], token[2]
                 table_result.insert('', 'end', values=(line, code, error))
 
+            for x in range(1, line_numbers+1):
+                textbox_linenum.insert('end', f"{x}\n")
+
+            textbox_linenum.configure(state="disabled")
+
+
     table_result.heading('Lexemes', text='Code')
     table_result.heading('Token', text='Error Description')
 
@@ -194,7 +199,9 @@ def command_syntax():
 def command_new():
     textbox_code.configure(state="normal")
     textbox_code.delete("1.0", "end")
-
+    textbox_linenum.configure(state="normal")
+    textbox_linenum.delete("0.0", "end")
+    textbox_linenum.configure(state="disabled")
     # delete treeview -------------------------------------------------------------------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!
     button_new.place_forget()
     button_export.place_forget()
@@ -233,6 +240,12 @@ if __name__ == "__main__":
 
     label_logo = customtkinter.CTkLabel(window, image=img_logo_dark, text="")
     label_logo.place(x=71, y=65)
+
+    textbox_linenum = customtkinter.CTkTextbox(window, width=50, height=577, fg_color="#292929", text_color="#7F7F7F", state='disabled',
+                                            font=("Consolas", 16))
+    textbox_linenum.place(x=34, y=141)
+
+
 
     textbox_code = customtkinter.CTkTextbox(window, width=780, height=577, fg_color="#292929", text_color="#FFFFFF",
                                             font=("Consolas", 16))
