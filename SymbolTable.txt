@@ -1,21 +1,118 @@
-===============================================================
-LEXEME					 |			TOKEN
-===============================================================
-when                     |          KEYWORD
-_______________________________________________________________
-(                        |          PARENTHESIS_L
-_______________________________________________________________
-x                        |          IDENTIFIER
-_______________________________________________________________
->=                       |          GREATER_THAN_EQUAL
-_______________________________________________________________
-12                       |          POSITIVE_INTEGER
-_______________________________________________________________
-output                   |          KEYWORD
-_______________________________________________________________
-(                        |          PARENTHESIS_L
-_______________________________________________________________
-"hello world!"           |          STRING
-_______________________________________________________________
-)                        |          PARENTHESIS_R
-_______________________________________________________________
++-----------------------------------+--------------------+
+|               Lexeme              |       Token        |
++-----------------------------------+--------------------+
+|                int                |     DATA_TYPE      |
+|                 n1                |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|                 7                 |      INTEGER       |
+|                int                |     DATA_TYPE      |
+|                 n2                |     IDENTIFIER     |
+|                 ,                 |       COMMA        |
+|                 n3                |     IDENTIFIER     |
+|                int                |     DATA_TYPE      |
+|                 n3                |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|                 4                 |      INTEGER       |
+|                 ,                 |       COMMA        |
+|                 n5                |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|                 6                 |      INTEGER       |
+|                str                |     DATA_TYPE      |
+|                 n6                |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|                 5                 |      INTEGER       |
+|                 n7                |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|                 2                 |      INTEGER       |
+|                 @                 | COMMENT_SYM_SINGLE |
+|              constants            |   COMMENT_SINGLE   |
+|                deci               |     DATA_TYPE      |
+|              value_pi             |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|                 pi                |      CONSTANT      |
+|                bool               |     DATA_TYPE      |
+|                 g                 |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|              accGrav              |      CONSTANT      |
+|                when               |      KEYWORD       |
+|                 (                 |  PARENTHESIS_OPEN  |
+|                 n1                |     IDENTIFIER     |
+|                 <=                |    LESS_THAN_EQ    |
+|                 n2                |     IDENTIFIER     |
+|                 )                 | PARENTHESIS_CLOSE  |
+|                 :                 |  COLON_DELIMITER   |
+|               output              |      KEYWORD       |
+|                 (                 |  PARENTHESIS_OPEN  |
+|     "Ascending order: n1, n2"     |       STRING       |
+|                 )                 | PARENTHESIS_CLOSE  |
+|             otherwise             |      KEYWORD       |
+|                when               |      KEYWORD       |
+|                 (                 |  PARENTHESIS_OPEN  |
+|                 n3                |     IDENTIFIER     |
+|                 >                 |    GREATER_THAN    |
+|                 n1                |     IDENTIFIER     |
+|                AND                |    LOGICAL_AND     |
+|                 n4                |     IDENTIFIER     |
+|                 <                 |     LESS_THAN      |
+|                 n2                |     IDENTIFIER     |
+|                 )                 | PARENTHESIS_CLOSE  |
+|                 :                 |  COLON_DELIMITER   |
+|               output              |      KEYWORD       |
+|                 (                 |  PARENTHESIS_OPEN  |
+| "Ascending order: n1, n3, n4, n2" |       STRING       |
+|                 )                 | PARENTHESIS_CLOSE  |
+|             otherwise             |      KEYWORD       |
+|                 :                 |  COLON_DELIMITER   |
+|                loop               |      KEYWORD       |
+|                 i                 |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|                 0                 |      INTEGER       |
+|                 to                |      KEYWORD       |
+|                 5                 |      INTEGER       |
+|                 (                 |  PARENTHESIS_OPEN  |
+|                 i                 |     IDENTIFIER     |
+|                 ++                |     INCREMENT      |
+|                 )                 | PARENTHESIS_CLOSE  |
+|                 :                 |  COLON_DELIMITER   |
+|               output              |      KEYWORD       |
+|                 (                 |  PARENTHESIS_OPEN  |
+|               "i = "              |       STRING       |
+|                 ,                 |       COMMA        |
+|                 i                 |     IDENTIFIER     |
+|                 )                 | PARENTHESIS_CLOSE  |
+|                loop               |      KEYWORD       |
+|                 1                 |      INTEGER       |
+|                 to                |      KEYWORD       |
+|                 5                 |      INTEGER       |
+|                 (                 |  PARENTHESIS_OPEN  |
+|                 i                 |     IDENTIFIER     |
+|                 ++                |     INCREMENT      |
+|                 )                 | PARENTHESIS_CLOSE  |
+|                 :                 |  COLON_DELIMITER   |
+|                int                |     DATA_TYPE      |
+|               number              |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|               input               |      KEYWORD       |
+|                 (                 |  PARENTHESIS_OPEN  |
+|                 )                 | PARENTHESIS_CLOSE  |
+|                int                |     DATA_TYPE      |
+|            value_force            |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|               force               |      KEYWORD       |
+|                 (                 |  PARENTHESIS_OPEN  |
+|                 10                |      INTEGER       |
+|                 ,                 |       COMMA        |
+|                 2                 |      INTEGER       |
+|                 )                 | PARENTHESIS_CLOSE  |
+|                int                |     DATA_TYPE      |
+|            value_force            |     IDENTIFIER     |
+|                 =                 |       ASS_OP       |
+|               force               |      KEYWORD       |
+|                 (                 |  PARENTHESIS_OPEN  |
+|                 10                |      INTEGER       |
+|                 ,                 |       COMMA        |
+|                 2                 |      INTEGER       |
+|                 ,                 |       COMMA        |
+|                 3                 |      INTEGER       |
+|                 )                 | PARENTHESIS_CLOSE  |
++-----------------------------------+--------------------+
