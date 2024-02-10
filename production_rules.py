@@ -387,9 +387,6 @@ for x in combined_list:
     indented = f"<WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE><WHITESPACE>{x}"
     BODY_STMT.append(indented)
 
-    indented = f"<WHITESPACE><INDENT>{x}"
-    BODY_STMT.append(indented)
-
     indented = f"<INDENT>{x}"
     BODY_STMT.append(indented)
 
@@ -406,6 +403,24 @@ for x in combined_list:
     BODY_STMT.append(indented)
 
     indented = f"<INDENT2><INDENT2><INDENT2>{x}"
+    BODY_STMT.append(indented)
+
+    indented = f"<WHITESPACE><INDENT>{x}"
+    BODY_STMT.append(indented)
+
+    indented = f"<WHITESPACE><INDENT2>{x}"
+    BODY_STMT.append(indented)
+
+    indented = f"<WHITESPACE><INDENT><INDENT>{x}"
+    BODY_STMT.append(indented)
+
+    indented = f"<WHITESPACE><INDENT2><INDENT2>{x}"
+    BODY_STMT.append(indented)
+
+    indented = f"<WHITESPACE><INDENT><INDENT><INDENT>{x}"
+    BODY_STMT.append(indented)
+
+    indented = f"<WHITESPACE><INDENT2><INDENT2><INDENT2>{x}"
     BODY_STMT.append(indented)
 
 # handle line of codes that have whitespace/indent in the end of line
