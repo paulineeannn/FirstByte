@@ -356,6 +356,6 @@ def main(input_string):
 
 def call_syntax(input_string):
     tokens = main(input_string)
-    result_syntax = syntax.main(tokens)
+    line_numbers, result_syntax = syntax.main(tokens)
 
-    return result_syntax
+    return line_numbers, result_syntax
